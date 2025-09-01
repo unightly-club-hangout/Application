@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .form-group {
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #application-type {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Application Form</h1>
+
+        <label for="application-type">Select Application Type:</label>
+        <select id="application-type">
+            <option value="">-- Select --</option>
+            <option value="Developers">Developers</option>
+            <option value="volunteer">Volunteer Application</option>
+        </select>
+
+        <form id="application-form">
+
+            <div class="form-group" data-application-type="job">
+                <label for="job-name">Name:</label>
+                <input type="text" id="job-name" name="job-name">
+            </div>
+
+            <div class="form-group" data-application-type="job">
+                <label for="job-email">Email:</label>
+                <input type="email" id="job-email" name="job-email">
+            </div>
+
+            <div class="form-group" data-application-type="job">
+                <label for="job-position">Position Applying For:</label>
+                <input type="text" id="job-position" name="job-position">
+            </div>
+
+            <div class="form-group" data-application-type="scholarship">
+                <label for="scholarship-name">Name:</label>
+                <input type="text" id="scholarship-name" name="scholarship-name">
+            </div>
+
+            <div class="form-group" data-application-type="scholarship">
+                <label for="scholarship-email">Email:</label>
+                <input type="email" id="scholarship-email" name="scholarship-email">
+            </div>
+
+             <div class="form-group" data-application-type="volunteer">
+                <label for="volunteer-name">Name:</label>
+                <input type="text" id="volunteer-name" name="volunteer-name">
+            </div>
+
+            <div class="form-group" data-application-type="volunteer">
+                <label for="volunteer-email">Email:</label>
+                <input type="email" id="volunteer-email" name="volunteer-email">
+            </div>
+
+
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+
+    <script>
+        const applicationTypeSelect = document.getElementById('application-type');
+        const formGroups = document.querySelectorAll('.form-group');
+
+        applicationTypeSelect.addEventListener('change', function() {
+            const selectedApplicationType = this.value;
+
+            formGroups.forEach(group => {
+                if (group.dataset.applicationType === selectedApplicationType) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
