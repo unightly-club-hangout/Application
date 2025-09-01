@@ -83,13 +83,16 @@
 <body>
     <div class="container">
         <h1>Application Form</h1>
-        <div id="form-container">
+        <form id="application-form" action="https://formspree.io/f/mwpnqqgk" method="POST">
+            <div id="form-container">
             </div>
 
-        <div class="navigation-buttons">
-            <button id="prev-button" disabled>Back</button>
-            <button id="next-button">Next</button>
-        </div>
+            <div class="navigation-buttons">
+                <button id="prev-button" type="button" disabled>Back</button>
+                <button id="next-button" type="button">Next</button>
+                <button type="submit" id="submit-button">Submit Application</button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -98,6 +101,8 @@
         const formContainer = document.getElementById('form-container');
         const prevButton = document.getElementById('prev-button');
         const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const form = document.getElementById('application-form');
 
         let currentQuestionIndex = 0;
         let questions = [];
@@ -191,7 +196,7 @@
 
         // Navigation
         nextButton.addEventListener('click', () => {
-            if (validateQuestion(currentQuestionIndex)){
+            if (validateQuestion(currentQuestionIndex)) {
                 currentQuestionIndex++;
                 showQuestion(currentQuestionIndex);
             }
@@ -201,6 +206,22 @@
             currentQuestionIndex--;
             showQuestion(currentQuestionIndex);
         });
+
+        // Form submission
+        form.addEventListener('submit', (event) => {
+            if (!validateQuestion(currentQuestionIndex)) {
+                event.preventDefault(); // Prevent submission if the current question is invalid
+            }
+           const inputElements = formContainer.querySelectorAll('input, textarea');
+            inputElements.forEach(input => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = input.name;
+                hiddenInput.value = input.value;
+                form.appendChild(hiddenInput);
+        });
+        });
+
 
         // Initial question display
         showQuestion(currentQuestionIndex);
