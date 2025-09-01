@@ -7,15 +7,34 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <div id="topnav-container"></div>
     <div class="container">
         <div class="banner">
             <h2>Welcome to Application Central!</h2>
             <p>Where you can apply for anything Available!</p>
         </div>
         <h1>Available Applications</h1>
-        <ul>
-            <li><a href="application_form.html">Click to look for available positions.</a></li>
-        </ul>
+        <div class="application-type-box" data-application-type="job">
+            <h3>Job Application</h3>
+            <p>Apply for a job opening at our company.</p>
+            <a href="multi_page_form.html?application_type=job">Start Application</a>
+        </div>
+
+        <div class="application-type-box" data-application-type="scholarship">
+            <h3>Scholarship Application</h3>
+            <p>Apply for a scholarship to support your education.</p>
+            <a href="multi_page_form.html?application_type=scholarship">Start Application</a>
+        </div>
+
+        <div class="application-type-box" data-application-type="volunteer">
+            <h3>Volunteer Application</h3>
+            <p>Join our team as a volunteer and make a difference.</p>
+            <a href="multi_page_form.html?application_type=volunteer">Start Application</a>
+        </div>
     </div>
+    <script src="topnav.js"></script>
+    <script>
+        document.getElementById('topnav-container').innerHTML = topnavHTML;
+    </script>
 </body>
 </html>
