@@ -13,6 +13,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            text-align: center;
         }
 
         .application-type-box:hover {
@@ -22,111 +23,29 @@
         .application-type-box h3 {
             margin-top: 0;
         }
-
-        .form-group {
-            display: none;
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Application Form</h1>
 
-        <input type="hidden" id="selected-application-type" name="application_type" value="">
-
         <div class="application-type-box" data-application-type="job">
             <h3>Job Application</h3>
             <p>Apply for a job opening at our company.</p>
+            <a href="multi_page_form.html?application_type=job">Start Application</a>
         </div>
 
         <div class="application-type-box" data-application-type="scholarship">
             <h3>Scholarship Application</h3>
             <p>Apply for a scholarship to support your education.</p>
+            <a href="multi_page_form.html?application_type=scholarship">Start Application</a>
         </div>
 
         <div class="application-type-box" data-application-type="volunteer">
             <h3>Volunteer Application</h3>
             <p>Join our team as a volunteer and make a difference.</p>
+            <a href="multi_page_form.html?application_type=volunteer">Start Application</a>
         </div>
-
-        <form id="application-form">
-
-            <div class="form-group" data-application-type="job">
-                <label for="job-name">Name:</label>
-                <input type="text" id="job-name" name="job-name">
-            </div>
-
-            <div class="form-group" data-application-type="job">
-                <label for="job-email">Email:</label>
-                <input type="email" id="job-email" name="job-email">
-            </div>
-
-            <div class="form-group" data-application-type="job">
-                <label for="job-position">Position Applying For:</label>
-                <input type="text" id="job-position" name="job-position">
-            </div>
-
-            <div class="form-group" data-application-type="scholarship">
-                <label for="scholarship-name">Name:</label>
-                <input type="text" id="scholarship-name" name="scholarship-name">
-            </div>
-
-            <div class="form-group" data-application-type="scholarship">
-                <label for="scholarship-email">Email:</label>
-                <input type="email" id="scholarship-email" name="scholarship-email">
-            </div>
-
-             <div class="form-group" data-application-type="volunteer">
-                <label for="volunteer-name">Name:</label>
-                <input type="text" id="volunteer-name" name="volunteer-name">
-            </div>
-
-            <div class="form-group" data-application-type="volunteer">
-                <label for="volunteer-email">Email:</label>
-                <input type="email" id="volunteer-email" name="volunteer-email">
-            </div>
-
-
-            <button type="submit">Submit Application</button>
-        </form>
     </div>
-
-    <script>
-        const applicationTypeBoxes = document.querySelectorAll('.application-type-box');
-        const formGroups = document.querySelectorAll('.form-group');
-        const selectedApplicationTypeInput = document.getElementById('selected-application-type');
-
-        applicationTypeBoxes.forEach(box => {
-            box.addEventListener('click', function() {
-                const selectedApplicationType = this.dataset.applicationType;
-
-                // Set the value of the hidden input
-                selectedApplicationTypeInput.value = selectedApplicationType;
-
-                // Show/hide form groups based on selected application type
-                formGroups.forEach(group => {
-                    if (group.dataset.applicationType === selectedApplicationType) {
-                        group.style.display = 'block';
-                    } else {
-                        group.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>

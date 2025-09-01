@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Page Application Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .question-container {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .required:after {
+            content: "*";
+            color: red;
+            margin-left: 3px;
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .navigation-buttons button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .navigation-buttons button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Application Form</h1>
+        <div id="form-container">
+            </div>
+
+        <div class="navigation-buttons">
+            <button id="prev-button" disabled>Back</button>
+            <button id="next-button">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationType = urlParams.get('application_type');
+        const formContainer = document.getElementById('form-container');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+
+        let currentQuestionIndex = 0;
+        let questions = [];
+
+        // Define questions for each application type
+        const applicationQuestions = {
+            job: [
+                {
+                    label: 'Name', name: 'job-name', type: 'text', required: true
+                },
+                {
+                    label: 'Email', name: 'job-email', type: 'email', required: true
+                },
+                {
+                    label: 'Position Applying For', name: 'job-position', type: 'text', required: true
+                },
+                 {
+                    label: 'Cover Letter', name: 'job-coverletter', type: 'textarea', required: false
+                }
+            ],
+            scholarship: [
+                {
+                    label: 'Name', name: 'scholarship-name', type: 'text', required: true
+                },
+                {
+                    label: 'Email', name: 'scholarship-email', type: 'email', required: true
+                },
+                {
+                    label: 'GPA', name: 'scholarship-gpa', type: 'text', required: true
+                }
+            ],
+            volunteer: [
+                {
+                    label: 'Name', name: 'volunteer-name', type: 'text', required: true
+                },
+                {
+                    label: 'Email', name: 'volunteer-email', type: 'email', required: true
+                },
+                {
+                    label: 'Availability', name: 'volunteer-availability', type: 'text', required: true
+                }
+            ]
+        };
+
+        // Load questions based on application type
+        if (applicationQuestions[applicationType]) {
+            questions = applicationQuestions[applicationType];
+        } else {
+            formContainer.innerHTML = '<p>Invalid application type.</p>';
+        }
+
+        function showQuestion(index) {
+            formContainer.innerHTML = ''; // Clear previous question
+
+            if (index >= 0 && index < questions.length) {
+                const question = questions[index];
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question-container');
+                if (index === 0) {
+                    questionDiv.classList.add('active');
+                }
+
+                let requiredClass = question.required ? ' required' : '';
+
+                questionDiv.innerHTML = `<label for="${question.name}" class="${requiredClass}">${question.label}:</label><input type="${question.type}" id="${question.name}" name="${question.name}">`;
+                formContainer.appendChild(questionDiv);
+            }
+
+            // Update button states
+            prevButton.disabled = index === 0;
+            nextButton.disabled = index === questions.length - 1;
+        }
+
+        function validateQuestion(index) {
+            const question = questions[index];
+            const inputElement = document.getElementById(question.name);
+
+            if (question.required) {
+                if (!inputElement.value.trim()) {
+                    // Display error message (you can customize this)
+                    inputElement.classList.add("error");
+                    return false;
+                } else {
+                    inputElement.classList.remove("error");
+                    return true;
+                }
+            } else {
+                return true; // Optional questions are always valid
+            }
+        }
+
+        // Navigation
+        nextButton.addEventListener('click', () => {
+            if (validateQuestion(currentQuestionIndex)){
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentQuestionIndex--;
+            showQuestion(currentQuestionIndex);
+        });
+
+        // Initial question display
+        showQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>
