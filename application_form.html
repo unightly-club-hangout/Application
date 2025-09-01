@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .application-type-box {
-            border: 1px solid #cccccc72;
+            border: 1px solid #ccc;
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 5px;
@@ -17,7 +17,7 @@
         }
 
         .application-type-box:hover {
-            background-color: #f9f9f94e;
+            background-color: #f9f9f9;
         }
 
         .application-type-box h3 {
@@ -26,6 +26,7 @@
     </style>
 </head>
 <body>
+    <div id="topnav-container"></div>
     <div class="container">
         <h1>Application Form</h1>
 
@@ -47,5 +48,9 @@
             <a href="multi_page_form.html?application_type=volunteer">Start Application</a>
         </div>
     </div>
+    <script src="topnav.js"></script>
+    <script>
+        document.getElementById('topnav-container').innerHTML = topnavHTML;
+    </script>
 </body>
 </html>

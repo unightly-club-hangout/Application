@@ -55,6 +55,7 @@
     </style>
 </head>
 <body>
+    <div id="topnav-container"></div>
     <div class="container">
         <h1>Applications</h1>
 
@@ -62,6 +63,10 @@
             <!-- Applications will be loaded here -->
         </div>
     </div>
+     <script src="topnav.js"></script>
+    <script>
+        document.getElementById('topnav-container').innerHTML = topnavHTML;
+    </script>
 
     <script>
         // Sample application data (replace with your actual data)

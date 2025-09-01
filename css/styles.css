@@ -1,5 +1,5 @@
 .application-type-box {
-            border: 1px solid #cccccc79;
+            border: 1px solid #ccc;
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 5px;
@@ -45,48 +45,23 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
+        .topnav {
+            background-color: #333;
+            overflow: hidden;
     margin-bottom: 20px;
 }
 
-a {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #2ecc71;
-    color: #fff;
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
     text-decoration: none;
-    border-radius: 6px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 17px;
 }
 
-a:hover {
-    background-color: #27ae60;
-    transform: translateY(-2px);
-}
-
-.banner {
-    background: rgba(0, 0, 0, 0.3);
-    color: white;
-    padding: 25px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.banner h2 {
-    margin: 0;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.banner p {
-    font-size: 1.2em;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
 }
 
