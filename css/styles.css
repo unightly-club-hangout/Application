@@ -1,29 +1,30 @@
-/* Force refresh */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background: linear-gradient(to right, #667eea, #764ba2);
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    color: #fff;
 }
 
 .container {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    padding: 30px;
     width: 80%;
-    max-width: 600px;
+    max-width: 700px;
     text-align: center;
+    backdrop-filter: blur(5px);
 }
 
 h1 {
-    color: #e44d26;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 ul {
@@ -32,35 +33,41 @@ ul {
 }
 
 li {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 a {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
+    padding: 12px 24px;
+    background-color: #2ecc71;
+    color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 a:hover {
-    background-color: #2980b9;
+    background-color: #27ae60;
+    transform: translateY(-2px);
 }
 
 .banner {
-    background: linear-gradient(135deg, #e44d26, #f39c12);
+    background: rgba(0, 0, 0, 0.3);
     color: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .banner h2 {
     margin: 0;
-    font-size: 2em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+.banner p {
+    font-size: 1.2em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
