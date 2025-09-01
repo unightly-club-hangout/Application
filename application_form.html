@@ -6,6 +6,23 @@
     <title>Application Form</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
+        .application-type-box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .application-type-box:hover {
+            background-color: #f9f9f9;
+        }
+
+        .application-type-box h3 {
+            margin-top: 0;
+        }
+
         .form-group {
             display: none;
             margin-bottom: 15px;
@@ -23,26 +40,28 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
-        #application-type {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Application Form</h1>
 
-        <label for="application-type">Select Application Type:</label>
-        <select id="application-type">
-            <option value="">-- Select --</option>
-            <option value="Developers">Developers</option>
-            <option value="volunteer">Volunteer Application</option>
-        </select>
+        <input type="hidden" id="selected-application-type" name="application_type" value="">
+
+        <div class="application-type-box" data-application-type="job">
+            <h3>Job Application</h3>
+            <p>Apply for a job opening at our company.</p>
+        </div>
+
+        <div class="application-type-box" data-application-type="scholarship">
+            <h3>Scholarship Application</h3>
+            <p>Apply for a scholarship to support your education.</p>
+        </div>
+
+        <div class="application-type-box" data-application-type="volunteer">
+            <h3>Volunteer Application</h3>
+            <p>Join our team as a volunteer and make a difference.</p>
+        </div>
 
         <form id="application-form">
 
@@ -87,18 +106,25 @@
     </div>
 
     <script>
-        const applicationTypeSelect = document.getElementById('application-type');
+        const applicationTypeBoxes = document.querySelectorAll('.application-type-box');
         const formGroups = document.querySelectorAll('.form-group');
+        const selectedApplicationTypeInput = document.getElementById('selected-application-type');
 
-        applicationTypeSelect.addEventListener('change', function() {
-            const selectedApplicationType = this.value;
+        applicationTypeBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                const selectedApplicationType = this.dataset.applicationType;
 
-            formGroups.forEach(group => {
-                if (group.dataset.applicationType === selectedApplicationType) {
-                    group.style.display = 'block';
-                } else {
-                    group.style.display = 'none';
-                }
+                // Set the value of the hidden input
+                selectedApplicationTypeInput.value = selectedApplicationType;
+
+                // Show/hide form groups based on selected application type
+                formGroups.forEach(group => {
+                    if (group.dataset.applicationType === selectedApplicationType) {
+                        group.style.display = 'block';
+                    } else {
+                        group.style.display = 'none';
+                    }
+                });
             });
         });
     </script>
