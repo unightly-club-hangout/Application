@@ -3,23 +3,33 @@
 <head>
     <title>Job Application Form</title>
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="stylesheet" type="text/css" href="ja.css">
 </head>
 <body>
-    <h1>Job Application Form</h1>
-    <form>
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br><br>
+    <div class="form-section">
+        <div class="form-title">Job Application Form</div>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
+        <div class="form-section">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name">
+        </div>
 
-        <label for="position">Position Applying For:</label><br>
-        <input type="text" id="position" name="position"><br><br>
+        <div class="form-section">
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email">
+        </div>
 
-        <label for="resume">Resume:</label><br>
-        <input type="file" id="resume" name="resume"><br><br>
+        <div class="form-section">
+            <label for="position">Position Applying For:</label><br>
+            <input type="text" id="position" name="position">
+        </div>
+
+        <div class="form-section">
+            <label for="resume">Resume:</label><br>
+            <input type="file" id="resume" name="resume">
+        </div>
 
         <input type="submit" value="Submit">
-    </form>
+    </div>
 </body>
 </html>
