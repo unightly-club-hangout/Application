@@ -107,3 +107,29 @@ footer a {
     color: #fff;
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0fa, 0 0 40px #0fa, 0 0 50px #0fa, 0 0 60px #0fa, 0 0 70px #0fa;
 }
+
+.post {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.post h2 {
+    font-size: 1.5em;
+    color: #fff;
+    text-shadow: 0 0 5px #0fa;
+    margin-bottom: 10px;
+}
+
+.post p {
+    font-size: 1.1em;
+    line-height: 1.5;
+    color: #eee;
+}
+
+.post img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
