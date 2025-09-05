@@ -16,7 +16,10 @@
     </nav>
   </header>
   <div class="content">
-    <div id="posts-container"></div>
+    <div id="loading">
+      Loading posts...
+    </div>
+    <div id="posts-container" style="display: none;"></div>
   </div>
   <footer>
     <a href="https://unightly-club-hangout.github.io/uch/terms_of_service.html">Terms of Service</a>
@@ -24,10 +27,10 @@
     <a href="https://unightly-club-hangout.github.io/uch/issue.html">System Status</a>
   </footer>
   <div class="discord-widget">
-    <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" ></iframe>
   </div>
   <script>
-  let previousPosts = [];
+  let previousPosts = []
 
   const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
   const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
@@ -38,9 +41,11 @@
     .then(csvData => {
       const posts = parseCSV(csvData);
       displayPosts(posts);
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('posts-container').style.display = 'block';
+
     })
     .catch(error => console.error("Error fetching data:", error));
-
   function parseCSV(csvData) {
     const lines = csvData.split("\n");
     const headers = lines[0].split(",").map(header => header.trim());
