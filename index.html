@@ -32,6 +32,7 @@
   <script>
   let previousPosts = [];
   let previousTitles = []; // Track previous post titles
+let previousLength = 0; // Keep track of the previous data length
 
   const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
   const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
@@ -41,9 +42,10 @@
     .then(csvData => {
       const posts = parseCSV(csvData);
       displayPosts(posts);
-      previousPosts = posts; //THIS LINE WAS MOVED FROM BELOW
+    previousPosts = posts;
 
-      previousTitles = posts.map(post => post.Title); //THIS LINE WAS MOVED FROM BELOW
+    previousTitles = posts.map(post => post.Title);
+    previousLength = csvData.length;
     })
     .catch(error => console.error("Error fetching data:", error));
 
@@ -57,7 +59,7 @@
       if (values.length === headers.length) {
         const post = {};
         for (let j = 0; j < headers.length; j++) {
-          post[headers[j]] = values[j];
+        post[headers[j]] = values[j];
         }
         posts.push(post);
       }
@@ -68,17 +70,17 @@
   function displayPosts(posts) {
     const postsContainer = document.getElementById("posts-container");
     postsContainer.innerHTML = "";
-    posts.forEach(post => {
-      const postDiv = document.createElement("div");
-      postDiv.innerHTML = `
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('posts-container').style.display = 'block';
+  posts.forEach(post => {
+    const postDiv = document.createElement("div");
+    postDiv.innerHTML = `
           <h2>${post.Title}</h2>
           <p>${post.Content}</p>
           ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
         `;
-        postsContainer.appendChild(postDiv);
-    });
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('posts-container').style.display = 'block';
+    postsContainer.appendChild(postDiv);
+  });
   }
 
   async function sendToDiscord(post) {
@@ -112,24 +114,17 @@
       const csvData = await response.text();
       const posts = parseCSV(csvData);
 
-      // Get the titles of the new posts
-      const newTitles = posts.map(post => post.Title);
-
-      // Compare the new titles with the previous titles
-      if (JSON.stringify(newTitles) !== JSON.stringify(previousTitles)) {
-        // A new or modified post has been detected
-        console.log('New or modified post detected!');
-
-        // Find the newest post (assuming it's the first one)
+        if (csvData.length !== previousLength) {
         const newestPost = posts[0];
 
-        // Send the newest post to Discord
         await sendToDiscord(newestPost);
 
-      }
-           previousPosts = posts; //THIS LINE WAS MOVED FROM BELOW
-      previousTitles = newTitles;//THIS LINE WAS MOVED FROM BELOW
+        previousLength = csvData.length;
 
+      }
+
+           previousPosts = posts;
+      previousTitles = posts.map(post => post.Title);
       // Update the displayed posts
       displayPosts(posts);
     } catch (error) {
