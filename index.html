@@ -1,20 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCH</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <title>Unightly Club Hangout</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Unightly Club Hangout</h1>
-    </div>
-    <div class="discord-widget">
-        <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
-    </div>
-    <div id="posts-container">
-        </div>
-    <script src="script.js"></script>
+  <div class="container">
+    <h1>Unightly Club Hangout</h1>
+    <div id="posts-container"></div>
+  </div>
+
+  <script>
+    const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv";
+
+    fetch(googleSheetUrl)
+      .then(response => response.text())
+      .then(csvData => {
+        const posts = parseCSV(csvData);
+        displayPosts(posts);
+      })
+      .catch(error => console.error("Error fetching data:", error));
+
+    function parseCSV(csvData) {
+      const lines = csvData.split("\n");
+      const headers = lines[0].split(",").map(header => header.trim());
+      const posts = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(",").map(value => value.trim());
+        if (values.length === headers.length) {
+          const post = {};
+          for (let j = 0; j < headers.length; j++) {
+            post[headers[j]] = values[j];
+          }
+          posts.push(post);
+        }
+      }
+      return posts;
+    }
+
+    function displayPosts(posts) {
+      const postsContainer = document.getElementById("posts-container");
+      posts.forEach(post => {
+        const postDiv = document.createElement("div");
+        postDiv.innerHTML = `
+          <h2>${post.Title}</h2>
+          <p>${post.Content}</p>
+          ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
+        `;
+        postsContainer.appendChild(postDiv);
+      });
+    }
+  </script>
 </body>
 </html>

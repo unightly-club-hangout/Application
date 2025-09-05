@@ -1,36 +1,57 @@
 let previousPosts = [];
 
-async function fetchPosts() {
-    const githubRawUrl = 'https://raw.githubusercontent.com/unightly-club-hangout/unightlyclubhangout/refs/heads/main/posts.json'; // Replace with your GitHub raw URL
-    try {
-        const response = await default_api.fetch_url_content({
-            url: githubRawUrl
-        });
-        console.log('Response from GitHub:', response);
-        const posts = JSON.parse(response.fetch_url_content_response.content);
+const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
+const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
 
-        if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
-            // New post detected
-            const newPost = posts[0]; // Assuming the newest post is at the beginning
-            sendToDiscord(newPost);
-            previousPosts = posts;
-        }
+
+fetch(googleSheetUrl)
+    .then(response => response.text())
+    .then(csvData => {
+        const posts = parseCSV(csvData);
         displayPosts(posts);
-    } catch (error) {
-        console.error('Error fetching posts:', error);
-        console.error('Detailed error:', error.message, error.stack);
-        document.getElementById('posts-container').textContent = 'Failed to load posts. Check console for details.';
+    })
+    .catch(error => console.error("Error fetching data:", error));
+
+function parseCSV(csvData) {
+    const lines = csvData.split("\n");
+    const headers = lines[0].split(",").map(header => header.trim());
+    const posts = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(",").map(value => value.trim());
+        if (values.length === headers.length) {
+            const post = {};
+            for (let j = 0; j < headers.length; j++) {
+                post[headers[j]] = values[j];
+            }
+            posts.push(post);
+        }
     }
+    return posts;
+}
+
+function displayPosts(posts) {
+    const postsContainer = document.getElementById("posts-container");
+    postsContainer.innerHTML = "";
+    posts.forEach(post => {
+        const postDiv = document.createElement("div");
+        postDiv.innerHTML = `
+          <h2>${post.Title}</h2>
+          <p>${post.Content}</p>
+          ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
+        `;
+        postsContainer.appendChild(postDiv);
+    });
 }
 
 async function sendToDiscord(post) {
-    const webhookUrl = 'https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH'; // Replace with your Discord webhook URL
+    const webhookUrl = discordWebhookUrl;
 
     const message = {
         embeds: [{
-            title: post.title,
-            description: post.content,
-            image: post.image ? { url: post.image } : null
+            title: post.Title,
+            description: post.Content,
+            image: post.ImageURL ? { url: post.ImageURL } : null
         }]
     };
 
@@ -48,37 +69,34 @@ async function sendToDiscord(post) {
     }
 }
 
-function displayPosts(posts) {
-    const postsContainer = document.getElementById('posts-container');
-    postsContainer.innerHTML = ''; // Clear existing posts
+async function checkForNewPosts() {
+    try {
+        const response = await fetch(googleSheetUrl);
+        const csvData = await response.text();
+        const posts = parseCSV(csvData);
 
-    for (const post of posts) {
-        const postDiv = document.createElement('div');
-        postDiv.classList.add('post');
+        // Compare the new posts with the previous posts
+        if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
+            // A new post has been added
+            console.log('New post detected!');
 
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = post.title;
+            // Get the newest post (assuming it's the first one)
+            const newestPost = posts[0];
 
-        postDiv.appendChild(titleElement);
+            // Send the newest post to Discord
+            await sendToDiscord(newestPost);
 
-        if (post.image) {
-            const imageElement = document.createElement('img');
-            imageElement.src = post.image;
-            imageElement.style.maxWidth = '100%'; // Set a maximum width
-            postDiv.appendChild(imageElement);
+            // Update the previous posts
+            previousPosts = posts;
         }
 
-        const contentElement = document.createElement('p');
-        contentElement.textContent = post.content;
+        // Update the displayed posts
+        displayPosts(posts);
 
-        postDiv.appendChild(contentElement);
-
-        postsContainer.appendChild(postDiv);
+    } catch (error) {
+        console.error("Error checking for new posts:", error);
     }
 }
-
-// Fetch posts every 5 seconds (adjust as needed)
-setInterval(fetchPosts, 5000);
-
-fetchPosts();
+// Check for new posts every 5 seconds (adjust as needed)
+setInterval(checkForNewPosts, 5000);
 
