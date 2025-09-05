@@ -6,12 +6,13 @@
   <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
 
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/airtable@0.11.6/lib/airtable.browser.min.js"></script>
 </head>
 <body>
   <header>
     <h1>Unightly Club Hangout</h1>
     <nav>
-      <a href="unightlyclubhangout/">Home</a>
+      <a href="">Home</a>
       <a href="about.html/">About</a>
       <a href="https://unightlyclubhangout.tawk.help/">Contact</a>
     </nav>
@@ -38,6 +39,13 @@ let previousLength = 0; // Keep track of the previous data length
 const airtableToken = 'patiuPfgX7PCkU5iE.a7357d5812f0bed0ccb2f205bcb68140457f844dd5a72812ce3cef56be80c230'; // Replace with your Airtable Personal Access Token
 const airtableBaseId = 'appk50UxYKJDXjCpW'; // Replace with your Airtable Base ID
 const airtableTable = 'Posts'; // Replace with your table name
+    const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
+    // Timeout function
+    const loadingTimeout = setTimeout(function() {
+      document.getElementById('loading').textContent = "An error has occurred, 1.0, please contact staff at <a href='https://discord.gg/m9uA384RJk'>Discord Link</a>";
+            document.getElementById('loading').style.color = "red";
+
+    }, 180000); // 3 minutes
 
 function displayPosts(records) {
   const postsContainer = document.getElementById("posts-container");
@@ -104,9 +112,14 @@ async function checkForNewPosts() {
         await sendToDiscord(newestPost);
              previousLength = data.records.length
       }
-
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('posts-container').style.display = 'block';
+        clearTimeout(loadingTimeout);
     } catch (error) {
         console.error("Error fetching data:", error);
+       document.getElementById('loading').textContent = "An error has occurred, 1.0, please contact staff at <a href='https://discord.gg/yourdiscordlink'>Discord Link</a>";
+            document.getElementById('loading').style.color = "red";
+
     }
   }
 
