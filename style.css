@@ -81,3 +81,19 @@ body::before {
     }
 }
 
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.8em;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 5px;
+}
