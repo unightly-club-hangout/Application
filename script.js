@@ -1,12 +1,53 @@
-document.addEventListener('mousemove', function(e) {
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
+let previousPosts = [];
 
-    document.body.style.setProperty('background-position-x', x * 100 + '%');
-    document.body.style.setProperty('background-position-y', y * 100 + '%');
-});
+async function fetchPosts() {
+    const githubRawUrl = 'https://raw.githubusercontent.com/unightly-club-hangout/unightlyclubhangout/refs/heads/main/posts.json'; // Replace with your GitHub raw URL
 
-function displayPosts() {
+    try {
+        const response = await default_api.fetch_url_content({
+            url: githubRawUrl
+        });
+        const posts = JSON.parse(response.fetch_url_content_response.content);
+
+        if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
+            // New post detected
+            const newPost = posts[0]; // Assuming the newest post is at the beginning
+            sendToDiscord(newPost);
+            previousPosts = posts;
+        }
+        displayPosts(posts);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        document.getElementById('posts-container').textContent = 'Failed to load posts.';
+    }
+}
+
+async function sendToDiscord(post) {
+    const webhookUrl = 'https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH'; // Replace with your Discord webhook URL
+
+    const message = {
+        embeds: [{
+            title: post.title,
+            description: post.content,
+            image: post.image ? { url: post.image } : null
+        }]
+    };
+
+    try {
+        await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(message)
+        });
+        console.log('Post sent to Discord!');
+    } catch (error) {
+        console.error('Error sending to Discord:', error);
+    }
+}
+
+function displayPosts(posts) {
     const postsContainer = document.getElementById('posts-container');
     postsContainer.innerHTML = ''; // Clear existing posts
 
@@ -35,29 +76,7 @@ function displayPosts() {
     }
 }
 
+// Fetch posts every 5 seconds (adjust as needed)
+setInterval(fetchPosts, 5000);
 
-displayPosts();
-
-async function addPost() {
-  const newPostTitle = document.getElementById('new-post-title').value;
-  const newPostContent = document.getElementById('new-post-content').value;
-  const newPostImage = document.getElementById('new-post-image').value;
-
-  if (newPostTitle && newPostContent) {
-    posts.push({ title: newPostTitle, content: newPostContent, image: newPostImage });
-
-    const postsString = `const posts = ${JSON.stringify(posts, null, 4)};`;
-
-    // Update posts.js file content
-    await default_api.create_new_file({
-        filepath: 'posts.js',
-        contents: postsString,
-      });
-    displayPosts();
-
-    document.getElementById('new-post-title').value = '';
-    document.getElementById('new-post-content').value = '';
-    document.getElementById('new-post-image').value = '';
-  }
-}
-
+fetchPosts();
