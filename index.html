@@ -35,11 +35,12 @@
 let previousPosts = [];
 let previousTitles = []; // Track previous post titles
 let previousLength = 0; // Keep track of the previous data length
-
-const airtableToken = 'patiuPfgX7PCkU5iE.a7357d5812f0bed0ccb2f205bcb68140457f844dd5a72812ce3cef56be80c230'; // Replace with your Airtable Personal Access Token
-const airtableBaseId = 'appk50UxYKJDXjCpW'; // Replace with your Airtable Base ID
+    const airtableToken = 'patiuPfgX7PCkU5iE'; // Replace with your Airtable Personal Access Token
+    const airtableBaseId = 'appk50UxYKJDXjCpW'; // Replace with your Airtable Base ID
 const airtableTable = 'Posts'; // Replace with your table name
-    const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
+
+    const base = new Airtable({ apiKey: airtableToken }).base(airtableBaseId);
+    const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH";
     // Timeout function
     const loadingTimeout = setTimeout(function() {
       document.getElementById('loading').textContent = "An error has occurred, 1.0, please contact staff in contacts or in our discord server.";
@@ -59,47 +60,50 @@ function displayPosts(records) {
         `;
     postsContainer.appendChild(postDiv);
   });
-}
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('posts-container').style.display = 'block';
+        clearTimeout(loadingTimeout);
+    }
 
-async function sendToDiscord(record) {
-  const webhookUrl = discordWebhookUrl;
+    async function sendToDiscord(record) {
+      const webhookUrl = discordWebhookUrl;
 
-    // Check if the Discord column contains 'X' or 'Y'
-    if (record.get('Discord') === "X") {
+      // Check if the Discord column contains 'X' or 'Y'
+      if (record.get('Discord') === "X") {
         console.log("Discord post disabled for this message.");
         return; // Prevent sending the webhook
     }
 
-  const message = {
-    embeds: [{
-            title: record.get('Title'),
-            description: record.get('Content'),
-            image: record.get('ImageURL') ? { url: record.get('ImageURL') } : null
-    }]
-  };
+      const message = {
+        embeds: [{
+          title: record.get('Title'),
+          description: record.get('Content'),
+          image: record.get('ImageURL') ? { url: record.get('ImageURL') } : null
+        }]
+      };
 
-  try {
-    await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(message)
-    });
-    console.log('Post sent to Discord!');
-  } catch (error) {
-    console.error('Error sending to Discord:', error);
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(message)
+        });
+        console.log('Post sent to Discord!');
+    } catch (error) {
+        console.error('Error sending to Discord:', error);
+    }
   }
-}
 
 
-async function checkForNewPosts() {
-    try {
+    async function checkForNewPosts() {
+      try {
         const response = await fetch(`https://api.airtable.com/v0/${airtableBaseId}/${airtableTable}`, {
-        headers: {
-                Authorization: `Bearer ${airtableToken}`
-            }
-      });
+          headers: {
+            Authorization: `Bearer ${airtableToken}`
+          }
+        });
 
         const data = await response.json();
 
@@ -108,20 +112,16 @@ async function checkForNewPosts() {
         //NEW - Check the messages and only send newest
       if (data.records.length > previousLength) {
 
-            const newestPost = data.records[0];
-        await sendToDiscord(newestPost);
-             previousLength = data.records.length
-      }
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('posts-container').style.display = 'block';
-        clearTimeout(loadingTimeout);
-    } catch (error) {
+          const newestPost = data.records[0];
+          await sendToDiscord(newestPost);
+          previousLength = data.records.length
+        }
+      } catch (error) {
         console.error("Error fetching data:", error);
        document.getElementById('loading').textContent = "An error has occurred, 1.0, please contact staff at <a href='https://discord.gg/yourdiscordlink'>Discord Link</a>";
             document.getElementById('loading').style.color = "red";
-
+      }
     }
-  }
 
   // Check for new posts every 5 seconds (adjust as needed)
   setInterval(checkForNewPosts, 5000);
