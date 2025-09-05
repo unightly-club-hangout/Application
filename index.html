@@ -86,6 +86,13 @@ let previousLength = 0; // Keep track of the previous data length
   async function sendToDiscord(post) {
     const webhookUrl = discordWebhookUrl;
 
+    // Check if the content ends with 'X' or 'Y'
+    const content = post.Content.trim();
+    if (content.endsWith("X")) {
+        console.log("Discord post disabled for this message.");
+        return; // Prevent sending the webhook
+    }
+
     const message = {
       embeds: [{
         title: post.Title,
