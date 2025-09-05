@@ -2,11 +2,11 @@ let previousPosts = [];
 
 async function fetchPosts() {
     const githubRawUrl = 'https://raw.githubusercontent.com/unightly-club-hangout/unightlyclubhangout/refs/heads/main/posts.json'; // Replace with your GitHub raw URL
-
     try {
         const response = await default_api.fetch_url_content({
             url: githubRawUrl
         });
+        console.log('Response from GitHub:', response);
         const posts = JSON.parse(response.fetch_url_content_response.content);
 
         if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
@@ -18,7 +18,8 @@ async function fetchPosts() {
         displayPosts(posts);
     } catch (error) {
         console.error('Error fetching posts:', error);
-        document.getElementById('posts-container').textContent = 'Failed to load posts.';
+        console.error('Detailed error:', error.message, error.stack);
+        document.getElementById('posts-container').textContent = 'Failed to load posts. Check console for details.';
     }
 }
 
@@ -80,3 +81,4 @@ function displayPosts(posts) {
 setInterval(fetchPosts, 5000);
 
 fetchPosts();
+
