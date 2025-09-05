@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Unightly Club Hangout</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
   <div class="container">
     <h1>Unightly Club Hangout</h1>
@@ -7,8 +15,11 @@
     <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
   </div>
   <script>
+  let previousPosts = [];
+
   const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
   const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
+
 
   fetch(googleSheetUrl)
     .then(response => response.text())
@@ -108,3 +119,4 @@
   setInterval(checkForNewPosts, 5000);
   </script>
 </body>
+</html>
