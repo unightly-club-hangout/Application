@@ -47,6 +47,10 @@ header nav a {
     margin: 0 auto;
     padding: 20px;
     text-align: center;
+    height: 400px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .discord-widget {
@@ -131,6 +135,7 @@ footer a {
 .post img {
     max-width: 100%;
     height: auto;
+    max-height: 500px;
     border-radius: 5px;
     margin-bottom: 10px;
 }

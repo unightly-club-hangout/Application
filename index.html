@@ -30,22 +30,23 @@
     <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" ></iframe>
   </div>
   <script>
-  let previousPosts = []
+  let previousPosts = [];
+  let previousTitles = []; // Track previous post titles
 
   const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
   const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
-
 
   fetch(googleSheetUrl)
     .then(response => response.text())
     .then(csvData => {
       const posts = parseCSV(csvData);
       displayPosts(posts);
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('posts-container').style.display = 'block';
+      previousPosts = posts; //THIS LINE WAS MOVED FROM BELOW
 
+      previousTitles = posts.map(post => post.Title); //THIS LINE WAS MOVED FROM BELOW
     })
     .catch(error => console.error("Error fetching data:", error));
+
   function parseCSV(csvData) {
     const lines = csvData.split("\n");
     const headers = lines[0].split(",").map(header => header.trim());
@@ -76,6 +77,8 @@
         `;
         postsContainer.appendChild(postDiv);
     });
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('posts-container').style.display = 'block';
   }
 
   async function sendToDiscord(post) {
@@ -85,7 +88,7 @@
       embeds: [{
         title: post.Title,
         description: post.Content,
-        image: post.ImageURL ? {url: post.ImageURL} : null
+        image: post.ImageURL ? { url: post.ImageURL } : null
       }]
     };
 
@@ -109,31 +112,35 @@
       const csvData = await response.text();
       const posts = parseCSV(csvData);
 
-      // Compare the new posts with the previous posts
-      if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
-        // A new post has been added
-        console.log('New post detected!');
+      // Get the titles of the new posts
+      const newTitles = posts.map(post => post.Title);
 
-        // Get the newest post (assuming it's the first one)
+      // Compare the new titles with the previous titles
+      if (JSON.stringify(newTitles) !== JSON.stringify(previousTitles)) {
+        // A new or modified post has been detected
+        console.log('New or modified post detected!');
+
+        // Find the newest post (assuming it's the first one)
         const newestPost = posts[0];
 
         // Send the newest post to Discord
         await sendToDiscord(newestPost);
 
-        // Update the previous posts
-        previousPosts = posts;
       }
+           previousPosts = posts; //THIS LINE WAS MOVED FROM BELOW
+      previousTitles = newTitles;//THIS LINE WAS MOVED FROM BELOW
 
       // Update the displayed posts
       displayPosts(posts);
-
     } catch (error) {
       console.error("Error checking for new posts:", error);
     }
   }
 
+
   // Check for new posts every 5 seconds (adjust as needed)
   setInterval(checkForNewPosts, 5000);
+  checkForNewPosts()
   </script>
 </body>
 </html>
