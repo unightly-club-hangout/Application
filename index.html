@@ -33,6 +33,7 @@
   let previousPosts = [];
   let previousTitles = []; // Track previous post titles
 let previousLength = 0; // Keep track of the previous data length
+let headers = [];
 
   const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
   const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
@@ -51,7 +52,7 @@ let previousLength = 0; // Keep track of the previous data length
 
   function parseCSV(csvData) {
     const lines = csvData.split("\n");
-    const headers = lines[0].split(",").map(header => header.trim());
+    headers = lines[0].split(",").map(header => header.trim());
     const posts = [];
 
     for (let i = 1; i < lines.length; i++) {
@@ -86,9 +87,11 @@ let previousLength = 0; // Keep track of the previous data length
   async function sendToDiscord(post) {
     const webhookUrl = discordWebhookUrl;
 
-    // Check if the content ends with 'X' or 'Y'
-    const content = post.Content.trim();
-    if (content.endsWith("X")) {
+    // Check if the Discord column contains 'X' or 'Y'
+    const discordColumnHeader = headers[3]; // Assuming Discord column is the 4th column
+    const discordValue = post[discordColumnHeader];
+
+    if (discordValue && discordValue.trim() === "X") {
         console.log("Discord post disabled for this message.");
         return; // Prevent sending the webhook
     }
