@@ -4,13 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCH</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
     <div class="container">
         <h1>Unightly Club Hangout</h1>
     </div>
     <div class="discord-widget">
         <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
     </div>
+    <div id="posts-container">
+        </div>
+
+      <form id="update-posts-form" style="display:none;">
+        <label for="new-post-title">New Post Title:</label><br>
+        <input type="text" id="new-post-title" name="new-post-title"><br>
+        <label for="new-post-content">New Post Content:</label><br>
+        <textarea id="new-post-content" name="new-post-content"></textarea><br>
+        <label for="new-post-image">New Post Image URL:</label><br>
+        <input type="text" id="new-post-image" name="new-post-image"><br>
+        <button type="button" onclick="addPost()">Add Post</button>
+      </form>
+    <script src="posts.js"></script>
     <script src="script.js"></script>
-    <link rel="stylesheet" href="style.css">
 </body>
 </html>
