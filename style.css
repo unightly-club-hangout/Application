@@ -52,3 +52,13 @@ body::after {
     z-index: -1;
     clip-path: polygon(45% 0, 100% 0%, 100% 100%, 60% 100%);
 }
+
+.discord-widget {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background-color: #23272a;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
