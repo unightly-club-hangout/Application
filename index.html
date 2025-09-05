@@ -1,58 +1,110 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Unightly Club Hangout</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
-</head>
 <body>
   <div class="container">
     <h1>Unightly Club Hangout</h1>
     <div id="posts-container"></div>
   </div>
-
+  <div class="discord-widget">
+    <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
+  </div>
   <script>
-    const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv";
+  const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
+  const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
 
-    fetch(googleSheetUrl)
-      .then(response => response.text())
-      .then(csvData => {
-        const posts = parseCSV(csvData);
-        displayPosts(posts);
-      })
-      .catch(error => console.error("Error fetching data:", error));
+  fetch(googleSheetUrl)
+    .then(response => response.text())
+    .then(csvData => {
+      const posts = parseCSV(csvData);
+      displayPosts(posts);
+    })
+    .catch(error => console.error("Error fetching data:", error));
 
-    function parseCSV(csvData) {
-      const lines = csvData.split("\n");
-      const headers = lines[0].split(",").map(header => header.trim());
-      const posts = [];
+  function parseCSV(csvData) {
+    const lines = csvData.split("\n");
+    const headers = lines[0].split(",").map(header => header.trim());
+    const posts = [];
 
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(",").map(value => value.trim());
-        if (values.length === headers.length) {
-          const post = {};
-          for (let j = 0; j < headers.length; j++) {
-            post[headers[j]] = values[j];
-          }
-          posts.push(post);
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(",").map(value => value.trim());
+      if (values.length === headers.length) {
+        const post = {};
+        for (let j = 0; j < headers.length; j++) {
+          post[headers[j]] = values[j];
         }
+        posts.push(post);
       }
-      return posts;
     }
+    return posts;
+  }
 
-    function displayPosts(posts) {
-      const postsContainer = document.getElementById("posts-container");
-      posts.forEach(post => {
-        const postDiv = document.createElement("div");
-        postDiv.innerHTML = `
+  function displayPosts(posts) {
+    const postsContainer = document.getElementById("posts-container");
+    postsContainer.innerHTML = "";
+    posts.forEach(post => {
+      const postDiv = document.createElement("div");
+      postDiv.innerHTML = `
           <h2>${post.Title}</h2>
           <p>${post.Content}</p>
           ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
         `;
         postsContainer.appendChild(postDiv);
+    });
+  }
+
+  async function sendToDiscord(post) {
+    const webhookUrl = discordWebhookUrl;
+
+    const message = {
+      embeds: [{
+        title: post.Title,
+        description: post.Content,
+        image: post.ImageURL ? {url: post.ImageURL} : null
+      }]
+    };
+
+    try {
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(message)
       });
+      console.log('Post sent to Discord!');
+    } catch (error) {
+      console.error('Error sending to Discord:', error);
     }
+  }
+
+  async function checkForNewPosts() {
+    try {
+      const response = await fetch(googleSheetUrl);
+      const csvData = await response.text();
+      const posts = parseCSV(csvData);
+
+      // Compare the new posts with the previous posts
+      if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
+        // A new post has been added
+        console.log('New post detected!');
+
+        // Get the newest post (assuming it's the first one)
+        const newestPost = posts[0];
+
+        // Send the newest post to Discord
+        await sendToDiscord(newestPost);
+
+        // Update the previous posts
+        previousPosts = posts;
+      }
+
+      // Update the displayed posts
+      displayPosts(posts);
+
+    } catch (error) {
+      console.error("Error checking for new posts:", error);
+    }
+  }
+
+  // Check for new posts every 5 seconds (adjust as needed)
+  setInterval(checkForNewPosts, 5000);
   </script>
 </body>
-</html>
