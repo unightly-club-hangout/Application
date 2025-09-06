@@ -1,7 +1,7 @@
 let previousPosts = [];
 
-const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
-const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
+const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv";
+const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH";
 
 
 fetch(googleSheetUrl)
@@ -39,6 +39,7 @@ function displayPosts(posts) {
           <h2>${post.Title}</h2>
           <p>${post.Content}</p>
           ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
+          <button class="buy-button" data-product-id="${post.Title.replace(/\s+/g, '-').toLowerCase()}">Buy</button>
         `;
         postsContainer.appendChild(postDiv);
     });
@@ -75,28 +76,23 @@ async function checkForNewPosts() {
         const csvData = await response.text();
         const posts = parseCSV(csvData);
 
-        // Compare the new posts with the previous posts
         if (JSON.stringify(posts) !== JSON.stringify(previousPosts)) {
-            // A new post has been added
             console.log('New post detected!');
-
-            // Get the newest post (assuming it's the first one)
             const newestPost = posts[0];
-
-            // Send the newest post to Discord
             await sendToDiscord(newestPost);
-
-            // Update the previous posts
             previousPosts = posts;
         }
-
-        // Update the displayed posts
         displayPosts(posts);
 
     } catch (error) {
         console.error("Error checking for new posts:", error);
     }
 }
-// Check for new posts every 5 seconds (adjust as needed)
 setInterval(checkForNewPosts, 5000);
 
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('buy-button')) {
+        const productId = event.target.dataset.productId;
+        alert('You clicked Buy for product ID: ' + productId);
+    }
+});
