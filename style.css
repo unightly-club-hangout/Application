@@ -1,9 +1,86 @@
 body {
-    font-family: sans-serif;
     margin: 0;
     overflow: hidden;
     background-color: #111;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+header {
+    background-color: #222;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0fa, 0 0 40px #0fa, 0 0 50px #0fa, 0 0 60px #0fa, 0 0 70px #0fa;
+}
+
+header nav {
+    margin-top: 10px;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.container {
+    text-align: center;
+}
+
+#posts-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+    background: linear-gradient(to bottom, rgba(17, 17, 17, 0.9), rgba(34, 34, 34, 0.9));
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    scrollbar-width: thin; /* Modern scrollbar for Firefox */
+    scrollbar-color: #0fa #222;
+	font-family: 'Helvetica', sans-serif;
+}
+
+/* Scrollbar styling for Chrome, Safari, and Edge */
+#posts-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#posts-container::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 10px;
+}
+
+#posts-container::-webkit-scrollbar-thumb {
+    background-color: #0fa;
+    border-radius: 10px;
+    border: 2px solid #222;
+}
+
+.discord-widget {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    background-color: #23272a;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 body::before {
@@ -19,42 +96,28 @@ body::before {
     filter: blur(5px);
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 1em;
-    text-align: center;
+@keyframes animate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
-nav a {
-    color: white;
-    padding: 1em;
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.8em;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #fff;
     text-decoration: none;
+    margin: 0 5px;
 }
-
-main {
-    padding: 2em;
-}
-
-.product-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.product {
-    border: 1px solid #ccc;
-    padding: 1em;
-    margin: 1em;
-    width: 300px;
-    text-align: center;
-}
-
-.buy-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 0.5em 1em;
-    border: none;
-    cursor: pointer;
-}
-
