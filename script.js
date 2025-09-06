@@ -34,12 +34,13 @@ function displayPosts(posts) {
     const postsContainer = document.getElementById("posts-container");
     postsContainer.innerHTML = "";
     posts.forEach(post => {
+        const productId = post.Title.replace(/\s+/g, '-').toLowerCase();
         const postDiv = document.createElement("div");
         postDiv.innerHTML = `
           <h2>${post.Title}</h2>
           <p>${post.Content}</p>
           ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
-          <button class="buy-button" data-product-id="${post.Title.replace(/\s+/g, '-').toLowerCase()}">Buy</button>
+          <button class="view-button" data-product-id="${productId}">View</button>
         `;
         postsContainer.appendChild(postDiv);
     });
@@ -90,9 +91,107 @@ async function checkForNewPosts() {
 }
 setInterval(checkForNewPosts, 5000);
 
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('buy-button')) {
-        const productId = event.target.dataset.productId;
-        alert('You clicked Buy for product ID: ' + productId);
+let productCounter = 2; // Start from 2 since you have 2 products already
+let isLoggedIn = false; // Track login status
+
+// Function to show the login form
+function showLogin() {
+    const loginForm = document.getElementById('loginForm');
+    loginForm.style.display = 'block';
+    const addProductButton = document.querySelector('.add-product-button');
+        addProductButton.style.display = 'none';
+
+
+}
+
+
+
+
+// Function to handle login submission
+function login() {
+    const passwordInput = document.getElementById('password');
+    const password = passwordInput.value;
+
+    // Replace 'YOUR_PASSWORD' with your actual password
+    if (password === 'YOUR_PASSWORD') {
+        isLoggedIn = true;
+        const loginForm = document.getElementById('loginForm');
+        loginForm.style.display = 'none';
+
+        const addProductButton = document.querySelector('.add-product-button');
+        addProductButton.style.display = 'inline-block'; // Show the add product button
+    } else {
+        alert('Incorrect password');
     }
+}
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('view-button')) {
+        const productId = event.target.dataset.productId;
+        const modal = document.getElementById('myModal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalImage = document.getElementById('modal-image');
+        const modalDescription = document.getElementById('modal-description');
+        const modalPrice = document.getElementById('modal-price');
+        const downloadLink = document.getElementById('download-link');
+
+        //Set fake downloads and all the products
+
+
+         if (productId === '1') {
+            modalTitle.textContent = "Product 1";
+            modalImage.src = "image1.jpg";
+            modalImage.alt = "Product 1";
+            modalDescription.textContent = "Description of Product 1 This Item is Free!";
+            modalPrice.textContent = "This item is free!";
+            downloadLink.style.display = "block";
+            downloadLink.href = "https://www.easygifanimator.net/images/samples/video-to-gif-sample.gif";
+
+        } else if (productId === '2') {
+            modalTitle.textContent = "Product 2";
+            modalImage.src = "image2.jpg";
+            modalImage.alt = "Product 2";
+            modalDescription.textContent = "Description of Product 2";
+            modalPrice.textContent = "$20.00";
+            downloadLink.style.display = "none";
+        }
+
+         modal.style.display = "block";
+    }
+    if (event.target.classList.contains('add-product-button')) {
+      addProduct();
+    }
+
+    if (event.target.classList.contains('close')) {
+        const modal = document.getElementById('myModal');
+        modal.style.display = "none";
+    }
+     if (event.target.classList.contains('login-button')) {
+          login();
+    }
+
+
 });
+
+
+function addProduct() {
+    productCounter++;
+    const productList = document.querySelector('.product-list');
+
+    // Create the product HTML
+    const productDiv = document.createElement('div');
+    productDiv.classList.add('product');
+    productDiv.innerHTML = `
+        <img src="image${productCounter}.jpg" alt="Product ${productCounter}">
+        <h2>Product ${productCounter}</h2>
+        <p>Description of Product ${productCounter}.</p>
+        <p>$10.00</p>
+        <button class="view-button" data-product-id="${productCounter}">View Item</button>
+    `;
+    productList.appendChild(productDiv);
+
+    // Update modal content in the if statements
+
+
+}
+
