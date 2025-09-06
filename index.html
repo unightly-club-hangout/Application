@@ -3,10 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Unightly Club Hangout</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
-
+  <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/main/UCHimage.webp" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/airtable@0.11.6/lib/airtable.browser.min.js"></script>
 </head>
 <body>
   <header>
@@ -31,6 +29,7 @@
   <div class="discord-widget">
     <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" ></iframe>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/airtable@0.11.6/lib/airtable.browser.min.js"></script>
   <script>
 let previousPosts = [];
 let previousTitles = []; // Track previous post titles
@@ -40,29 +39,19 @@ let previousLength = 0; // Keep track of the previous data length
 const airtableTable = 'Posts'; // Replace with your table name
 
     const base = new Airtable({ apiKey: airtableToken }).base(airtableBaseId);
-    const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH";
-    // Timeout function
-    const loadingTimeout = setTimeout(function() {
-      document.getElementById('loading').textContent = "An error has occurred, 1.0, please contact staff in contacts or in our discord server.";
-            document.getElementById('loading').style.color = "red";
 
-    }, 180000); // 3 minutes
-
-function displayPosts(records) {
-  const postsContainer = document.getElementById("posts-container");
-  postsContainer.innerHTML = "";
-    records.forEach(record => {
-    const postDiv = document.createElement("div");
-    postDiv.innerHTML = `
+    function displayPosts(records) {
+      const postsContainer = document.getElementById("posts-container");
+      postsContainer.innerHTML = "";
+      records.forEach(record => {
+        const postDiv = document.createElement("div");
+        postDiv.innerHTML = `
           <h2>${record.get('Title')}</h2>
           <p>${record.get('Content')}</p>
           ${record.get('ImageURL') ? `<img src="${record.get('ImageURL')}" alt="${record.get('Title')}">` : ""}
         `;
-    postsContainer.appendChild(postDiv);
-  });
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('posts-container').style.display = 'block';
-        clearTimeout(loadingTimeout);
+        postsContainer.appendChild(postDiv);
+      });
     }
 
     async function sendToDiscord(record) {
@@ -93,8 +82,8 @@ function displayPosts(records) {
         console.log('Post sent to Discord!');
     } catch (error) {
         console.error('Error sending to Discord:', error);
+      }
     }
-  }
 
 
     async function checkForNewPosts() {
@@ -118,14 +107,9 @@ function displayPosts(records) {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-       document.getElementById('loading').textContent = "An error has occurred, 1.0, please contact staff at <a href='https://discord.gg/yourdiscordlink'>Discord Link</a>";
-            document.getElementById('loading').style.color = "red";
       }
     }
 
-  // Check for new posts every 5 seconds (adjust as needed)
-  setInterval(checkForNewPosts, 5000);
-  checkForNewPosts()
-  </script>
-</body>
-</html>
+    // Check for new posts every 5 seconds (adjust as needed)
+    setInterval(checkForNewPosts, 5000);
+    checkForNewPosts()
