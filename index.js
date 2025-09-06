@@ -1,5 +1,5 @@
     let previousPosts = [];
-let previousTitles = []; // Track previous post titles
+let previousTitles = []; // Track previous post  titles
 let previousLength = 0; // Keep track of the previous data length
     const githubRawURL = 'https://gist.githubusercontent.com/silentmason/46d973b3702d6d81d8eeb7e5659caaa1/raw/f39d15024f176604e69d15962814771e8f600b98/posts.json'; // Replace with your Github Raw URL
     function displayPosts(posts) {
