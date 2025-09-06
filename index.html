@@ -29,45 +29,42 @@
   <div class="discord-widget">
     <iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" ></iframe>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/airtable@0.11.6/lib/airtable.browser.min.js"></script>
   <script>
 let previousPosts = [];
 let previousTitles = []; // Track previous post titles
 let previousLength = 0; // Keep track of the previous data length
-    const airtableToken = 'patiuPfgX7PCkU5iE'; // Replace with your Airtable Personal Access Token
-    const airtableBaseId = 'appk50UxYKJDXjCpW'; // Replace with your Airtable Base ID
-const airtableTable = 'Posts'; // Replace with your table name
+    const githubRawURL = 'https://gist.githubusercontent.com/silentmason/46d973b3702d6d81d8eeb7e5659caaa1/raw/f39d15024f176604e69d15962814771e8f600b98/posts.json'; // Replace with your Github Raw URL
 
-    const base = new Airtable({ apiKey: airtableToken }).base(airtableBaseId);
 
-    function displayPosts(records) {
+
+    function displayPosts(posts) {
       const postsContainer = document.getElementById("posts-container");
       postsContainer.innerHTML = "";
-      records.forEach(record => {
+      posts.forEach(post => {
         const postDiv = document.createElement("div");
         postDiv.innerHTML = `
-          <h2>${record.get('Title')}</h2>
-          <p>${record.get('Content')}</p>
-          ${record.get('ImageURL') ? `<img src="${record.get('ImageURL')}" alt="${record.get('Title')}">` : ""}
+          <h2>${post.Title}</h2>
+          <p>${post.Content}</p>
+          ${post.ImageURL ? `<img src="${post.ImageURL}" alt="${post.Title}">` : ""}
         `;
         postsContainer.appendChild(postDiv);
       });
     }
 
-    async function sendToDiscord(record) {
+    async function sendToDiscord(post) {
       const webhookUrl = discordWebhookUrl;
 
       // Check if the Discord column contains 'X' or 'Y'
-      if (record.get('Discord') === "X") {
+      if (post.Discord === "X") {
         console.log("Discord post disabled for this message.");
         return; // Prevent sending the webhook
     }
 
       const message = {
         embeds: [{
-          title: record.get('Title'),
-          description: record.get('Content'),
-          image: record.get('ImageURL') ? { url: record.get('ImageURL') } : null
+          title: post.Title,
+          description: post.Content,
+          image: post.ImageURL ? { url: post.ImageURL } : null
         }]
       };
 
@@ -88,22 +85,17 @@ const airtableTable = 'Posts'; // Replace with your table name
 
     async function checkForNewPosts() {
       try {
-        const response = await fetch(`https://api.airtable.com/v0/${airtableBaseId}/${airtableTable}`, {
-          headers: {
-            Authorization: `Bearer ${airtableToken}`
-          }
-        });
+        const response = await fetch(githubRawURL);
+         const data = await response.json()
 
-        const data = await response.json();
-
-        displayPosts(data.records);
+        displayPosts(data);
 
         //NEW - Check the messages and only send newest
-      if (data.records.length > previousLength) {
+        if (data.length > previousLength) {
 
-          const newestPost = data.records[0];
+          const newestPost = data[0];
           await sendToDiscord(newestPost);
-          previousLength = data.records.length
+          previousLength = data.length
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -113,3 +105,6 @@ const airtableTable = 'Posts'; // Replace with your table name
     // Check for new posts every 5 seconds (adjust as needed)
     setInterval(checkForNewPosts, 5000);
     checkForNewPosts()
+</script>
+</body>
+</html>
