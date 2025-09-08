@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discord Webhook Control</title>
+        <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Discord Webhook Control</h1>
+        <nav>
+      <a href="index.js">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://unightlyclubhangout.tawk.help/">Support</a>
+      <a href="https://uch.booth.pm/">Store</a>
+        </nav>
+    </header>
+
+    <main>
+        <form id="discord-form">
+            <label for="webhook-url">Webhook URL:</label>
+            <input type="text" id="webhook-url" name="webhook-url"><br><br>
+
+            <label for="webhook-enabled">Webhook Enabled:</label>
+            <input type="checkbox" id="webhook-enabled" name="webhook-enabled"><br><br>
+
+            <button type="button" onclick="sendTestMessage()">Send Test Message</button>
+        </form>
+    </main>
+
+    <footer>
+        <a href="https://unightly-club-hangout.github.io/uch/terms_of_service.html">Terms of Service</a>
+        <a href="https://unightly-club-hangout.github.io/uch/privacy_policy.html">Privacy Policy</a>
+        <a href="https://unightly-club-hangout.github.io/uch/issue.html">System Status</a>        
+    </footer>
+
+    <script>
+        function sendTestMessage() {
+            const webhookUrl = document.getElementById('webhook-url').value;
+
+            // Basic validation (you can add more robust validation)
+            if (!webhookUrl) {
+                alert('Please enter a Webhook URL');
+                return;
+            }
+
+            const message = {
+                content: "Test message from the website!"
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(message)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Test message sent successfully!');
+                } else {
+                    alert('Error sending test message.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending test message.');
+            });
+        }
+    </script>
+</body>
+</html>
