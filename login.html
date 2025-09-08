@@ -3,6 +3,7 @@
 <head>
   <title>Login with Google</title>
   <meta name="google-signin-client_id" content="90008544107-puntiddkae4hctcec08mghl6e9nhvs4k.apps.googleusercontent.com">
+    <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: sans-serif;
@@ -67,6 +68,7 @@
       console.log("Encoded JWT ID token: " + response.credential);
       document.getElementById("message").innerHTML = "Encoded JWT ID token: " + response.credential;
       //Send token to server
+          window.location.href = "https://unightly-club-hangout.github.io/unightlyclubhangout/";
       signOut();
     }
     function signOut() {
@@ -74,6 +76,7 @@
   if (cred) {
     cred.cancel();
     document.getElementById("message").innerHTML = "Signed out";
+          window.location.href = "https://unightly-club-hangout.github.io/unightlyclubhangout/login.html";
     }
 }
   </script>
