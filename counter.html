@@ -1,42 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Alpine.js Admin Panel</title>
+  <title>Simple Admin Panel</title>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script>
+    window.addEventListener('toolsLinkClicked', function(event) {
+      console.log('toolsLinkClicked event received in admin panel!');
+      console.log('Event details:', event.detail);
+    });
+  </script>
 </head>
 <body>
 
-  <div x-data="{
-    clickLogs: [],
-    logClick(event) {
-      this.clickLogs.push(event.target.textContent);
-      window.dispatchEvent(new CustomEvent('toolsLinkClicked', { detail: event.target.textContent }));
-    }
-  }">
-
-    <h2>Tools Top Navigation (Simulated)</h2>
-    <nav @click.prevent="logClick">
-      <a href="#">Tool 1</a> |
-      <a href="#">Tool 2</a> |
-      <a href="#">Tool 3</a> |
-      <a href="#">Tool 4</a>
-    </nav>
-
-    <h2>Admin Panel - Click Logs</h2>
-    <ul>
-      <template x-for="(log, index) in clickLogs" :key="index">
-        <li x-text="log"></li>
-      </template>
-    </ul>
-
-  </div>
-
-  <script>
-    window.addEventListener('toolsLinkClicked', function(event) {
-      console.log('Tools link clicked in index.html:', event.detail);
-      // Update your admin panel UI with the click information
-    });
-  </script>
+  <h1>Simple Admin Panel</h1>
+  <p>Listening for toolsLinkClicked events...</p>
 
 </body>
 </html>
