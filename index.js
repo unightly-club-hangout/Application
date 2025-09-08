@@ -1,7 +1,7 @@
     let previousPosts = [];
 let previousTitles = []; // Track previous post titles
 const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
-const discordWebhookUrl = "https://discord.com/api/webhooks/1413564287489671350/b-vIZS-1RaWHvSye5q0Bv-zW_0s5kDoZaYTt_KRe4QR7L77tGV5fX9DVeEiiynfARgNH"; // Replace with your Discord Webhook URL
+const discordWebhookUrl = "https://discord.com/api/webhooks/1413630048845693048/Hivus0XpBn0UZPJlTkXI7sHKcL3fE9YfDH8H4790yF4fYkn8kThChwT111Oux5BA_Zy_"; // Replace with your Discord Webhook URL
 
 fetch(googleSheetUrl)
   .then(response => response.text())
