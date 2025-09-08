@@ -12,6 +12,15 @@
   gtag('js', new Date());
 
   gtag('config', 'G-6JZ4GR0CGC');
+
+  function dispatchToolsClickEvent () {
+    const event = new CustomEvent('toolsLinkClicked', {
+      detail: {
+        timestamp: new Date().toISOString()
+      }
+    });
+    window.dispatchEvent(event);
+  }
 </script>
 </head>
 <body>
@@ -21,7 +30,7 @@
       <a href="">Home</a>
       <a href="about.html">About</a>
       <a href="https://uch.booth.pm/">Store</a>
-      <a href="tools.html">Tools</a>
+      <a href="tools.html" onclick="dispatchToolsClickEvent()">Tools</a>
     </nav>
   </header>
   <div class="content">

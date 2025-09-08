@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Alpine.js Counter Example</title>
+  <title>Alpine.js Admin Panel</title>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body>
 
-  <div x-data="{ count: 0 }">
-    <button @click="count--">-</button>
-    <span x-text="count"></span>
-    <button @click="count++">+</button>
+  <div x-data="{
+    clickLogs: [],
+    logClick(event) {
+      this.clickLogs.push(event.target.textContent);
+      window.dispatchEvent(new CustomEvent('toolsLinkClicked', { detail: event.target.textContent }));
+    }
+  }">
+
+    <h2>Tools Top Navigation (Simulated)</h2>
+    <nav @click.prevent="logClick">
+      <a href="#">Tool 1</a> |
+      <a href="#">Tool 2</a> |
+      <a href="#">Tool 3</a> |
+      <a href="#">Tool 4</a>
+    </nav>
+
+    <h2>Admin Panel - Click Logs</h2>
+    <ul>
+      <template x-for="(log, index) in clickLogs" :key="index">
+        <li x-text="log"></li>
+      </template>
+    </ul>
+
   </div>
+
+  <script>
+    window.addEventListener('toolsLinkClicked', function(event) {
+      console.log('Tools link clicked in index.html:', event.detail);
+      // Update your admin panel UI with the click information
+    });
+  </script>
 
 </body>
 </html>
