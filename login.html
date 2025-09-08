@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login with Google</title>
+  <meta name="google-signin-client_id" content="90008544107-puntiddkae4hctcec08mghl6e9nhvs4k.apps.googleusercontent.com">
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .login-container {
+      width: 300px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #g_id_onload {
+      display: block;
+      margin: 0 auto;
+    }
+    .g_id_signin {
+      margin: 10px auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Login with Google</h2>
+
+    <!-- Google Sign-In button -->
+    <div id="g_id_onload"
+         data-client_id="90008544107-puntiddkae4hctcec08mghl6e9nhvs4k.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-login_uri="https://unightly-club-hangout.github.io/unightlyclubhangout/"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+     <button onclick="signOut();">Sign Out</button>
+       <p id="message"></p>
+  </div>
+  <script src="https://accounts.google.com/gsi/client"></script>
+  <script>
+ window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "90008544107-puntiddkae4hctcec08mghl6e9nhvs4k.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementsByClassName("g_id_signin")[0],
+        { theme: "outline", size: "large"  }  // customization attributes
+      );
+      google.accounts.id.prompt(); // also display the One Tap sign-in prompt
+    }
+       function handleCredentialResponse(response) {
+      // This is where you get the ID token from Google
+      console.log("Encoded JWT ID token: " + response.credential);
+      document.getElementById("message").innerHTML = "Encoded JWT ID token: " + response.credential;
+      //Send token to server
+      signOut();
+    }
+    function signOut() {
+  const cred = google.accounts.id.getClient();
+  if (cred) {
+    cred.cancel();
+    document.getElementById("message").innerHTML = "Signed out";
+    }
+}
+  </script>
+
+</body>
+</html>

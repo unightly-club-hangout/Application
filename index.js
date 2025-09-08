@@ -2,14 +2,14 @@
 let previousTitles = []; // Track previous post titles
 const googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv"; // Replace with your Google Sheet URL
 const discordWebhookUrl = "https://discord.com/api/webhooks/1413630048845693048/Hivus0XpBn0UZPJlTkXI7sHKcL3fE9YfDH8H4790yF4fYkn8kThChwT111Oux5BA_Zy_"; // Replace with your Discord Webhook URL
-//fetch(googleSheetUrl)
-//  .then(response => response.text())
-//  .then(csvData => {
-//    const posts = parseCSV(csvData);
-//    displayPosts(posts);
-//previousPosts = posts
-//  })
-//  .catch(error => console.error("Error fetching data:", error));
+fetch(googleSheetUrl)
+  .then(response => response.text())
+  .then(csvData => {
+    const posts = parseCSV(csvData);
+    displayPosts(posts);
+previousPosts = posts
+  })
+  .catch(error => console.error("Error fetching data:", error));
 function parseCSV(csvData) {
   const lines = csvData.split("\n");
   const headers = lines[0].split(",").map(header => header.trim());
@@ -92,5 +92,5 @@ console.error("Error checking for new posts:", error);
 }
 // Check for new posts every 5 seconds (adjust as needed)
 
-//setInterval(checkForNewPosts, 5000);
-//checkForNewPosts()
+setInterval(checkForNewPosts, 5000);
+checkForNewPosts()
