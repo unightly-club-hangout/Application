@@ -4,6 +4,93 @@
     <title>Discord Webhook Control</title>
         <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/refs/heads/main/UCHimage.webp" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            background: linear-gradient(to bottom, #222, #333);
+            color: #eee;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 1em;
+            text-align: center;
+            border-bottom: 1px solid #555;
+        }
+
+        nav a {
+            color: #eee;
+            text-decoration: none;
+            padding: 1em;
+        }
+
+        main {
+            padding: 2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+        }
+
+        form {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #ddd;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: #eee;
+        }
+
+        button {
+            background-color: #00bcd4;
+            color: white;
+            padding: 0.75em 1.5em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #00acc1;
+        }
+
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8em;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -20,6 +107,15 @@
         <form id="discord-form">
             <label for="webhook-url">Webhook URL:</label>
             <input type="text" id="webhook-url" name="webhook-url"><br><br>
+
+             <label for="embed-title">Embed Title:</label>
+            <input type="text" id="embed-title" name="embed-title"><br><br>
+
+            <label for="embed-description">Embed Description:</label>
+            <textarea id="embed-description" name="embed-description"></textarea><br><br>
+
+            <label for="embed-image">Embed Image URL:</label>
+            <input type="text" id="embed-image" name="embed-image"><br><br>
 
             <label for="webhook-enabled">Webhook Enabled:</label>
             <input type="checkbox" id="webhook-enabled" name="webhook-enabled"><br><br>
@@ -38,6 +134,11 @@
         function sendTestMessage() {
             const webhookUrl = document.getElementById('webhook-url').value;
 
+            // Get input values
+            const embedTitle = document.getElementById('embed-title').value;
+            const embedDescription = document.getElementById('embed-description').value;
+            const embedImage = document.getElementById('embed-image').value;
+
             // Basic validation (you can add more robust validation)
             if (!webhookUrl) {
                 alert('Please enter a Webhook URL');
@@ -45,9 +146,20 @@
             }
 
             const message = {
-                content: "Test message from the website!"
-            };
+            embeds: [{
+                title: embedTitle,
+                description: embedDescription,
+                color: 16753920, // Orange color (decimal representation)
+                image: {
+                    url: embedImage // Use the image URL from the input
+                },
+                footer: {
+                    text: "Tells Fox",
+                     icon_url: 'https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/main/UCHimage.webp'
 
+                }
+            }]
+        };
             fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
