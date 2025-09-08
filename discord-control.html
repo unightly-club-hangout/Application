@@ -118,6 +118,12 @@
             <label for="embed-image">Embed Image URL:</label>
             <input type="text" id="embed-image" name="embed-image"><br><br>
 
+             <label for="embed-footer-text">Embed Footer Text:</label>
+            <input type="text" id="embed-footer-text" name="embed-footer-text"><br><br>
+
+            <label for="embed-footer-image">Embed Footer Image URL:</label>
+            <input type="text" id="embed-footer-image" name="embed-footer-image"><br><br>
+
             <label for="webhook-enabled">Webhook Enabled:</label>
             <input type="checkbox" id="webhook-enabled" name="webhook-enabled"><br><br>
 
@@ -136,15 +142,17 @@
             const webhookUrl = document.getElementById('webhook-url').value;
 
             // Get input values
-            const embedTitle = document.getElementById('embed-title').value;
             const embedDescription = document.getElementById('embed-description').value;
             const embedImage = document.getElementById('embed-image').value;
-
+            const embedFooterText = document.getElementById('embed-footer-text').value;
+            const embedFooterImage = document.getElementById('embed-footer-image').value;
             // Basic validation (you can add more robust validation)
             if (!webhookUrl) {
                 alert('Please enter a Webhook URL');
                 return;
             }
+
+            const embedTitle = document.getElementById('embed-title').value;
 
             const message = {
             embeds: [{
@@ -155,8 +163,8 @@
                     url: embedImage // Use the image URL from the input
                 },
                 footer: {
-                    text: "Tells Fox",
-                     icon_url: 'https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/main/UCHimage.webp'
+                    text:  embedFooterText,
+                     icon_url: embedFooterImage
 
                 }
             }]
