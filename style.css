@@ -97,6 +97,8 @@ header nav a {
     background-color: #23272a;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 body::before {
