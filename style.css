@@ -92,7 +92,7 @@ header nav a {
 .discord-widget {
     position: absolute;
     top: 50%;
-    right: 40px;
+    right: 60px;
     transform: translateY(-50%);
     background-color: #23272a;
     border-radius: 5px;
