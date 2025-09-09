@@ -8,42 +8,104 @@
   <link rel="stylesheet" href="style.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JZ4GR0CGC"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6JZ4GR0CGC');
-
-  function dispatchToolsClickEvent () {
-    const event = new CustomEvent('toolsLinkClicked', {
-      detail: {
-        timestamp: new Date().toISOString()
-      }
-    });
-    window.dispatchEvent(event);
-  }
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JZ4GR0CGC');
+function dispatchToolsClickEvent () {
+const event = new CustomEvent('toolsLinkClicked', {
+detail: {
+timestamp: new Date().toISOString()
+}
+});
+window.dispatchEvent(event);
+}
 </script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #f0f0f0;
+      padding: 20px;
+      box-sizing: border-box;
+      float: left;
+      height: 100%;
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Unightly Club Hangout</h1>
-    <nav>
-      <a href="">Home</a>
-      <a href="about.html">About</a>
-      <a href="https://uch.booth.pm/">Store</a>
-      <a href="tools.html" onclick="dispatchToolsClickEvent()">Tools</a>
-    </nav>
-  </header>
-  <div class="content">
-    <div id="posts-container">
-      Loading posts...
+
+  <div class="container">
+   <div class="sidebar" x-data="{ eventText: 'Initial event text' }">
+      <h2>Event Configuration</h2>
+      <div>
+        <label for="event-text">Event Text:</label>
+        <input type="text" id="event-text" x-model="eventText">
+        <button @click="$dispatch('update-event', eventText)">Update Event</button>
+      </div>
+       <h2>Menu</h2>
+      <ul>
+        <li><a href="https://discord.gg/your-discord-invite-link">Discord Event</a></li>
+        <li>Custom Events
+          <ul id="event-list">
+            <!-- Event list will be populated here -->
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="content"  x-data="{ currentEventText: 'Initial event text' }" @update-event.window="currentEventText = $event.detail">
+      <h1>Unightly Club Hangout</h1>
+            <p>Current Event Description:</p>
+      <p x-text="currentEventText"></p>
+<nav>
+<a href="">Home</a>
+<a href="about.html">About</a>
+<a href="https://uch.booth.pm/">Store</a>
+<a href="tools.html" onclick="dispatchToolsClickEvent()">Tools</a>
+</nav>
+<div class="content">
+<div id="posts-container">
+Loading posts...
+</div>
+</div>
     </div>
   </div>
-  <footer>
-    <a href="https://unightly-club-hangout.github.io/uch/terms_of_service.html">Terms of Service</a>
-    <a href="https://unightly-club-hangout.github.io/uch/privacy_policy.html">Privacy Policy</a>
-    <a href="https://unightly-club-hangout.github.io/uch/issue.html">System Status</a>
-  </footer>
-  <script src="index.js"></script>
+<footer>
+<a href="https://unightly-club-hangout.github.io/uch/terms_of_service.html">Terms of Service</a>
+<a href="https://unightly-club-hangout.github.io/uch/privacy_policy.html">Privacy Policy</a>
+<a href="https://unightly-club-hangout.github.io/uch/issue.html">System Status</a>
+</footer>
+<div class="discord-widget">
+<iframe src="https://discord.com/widget?id=1401631295108546590&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" ></iframe>
+</div>
+<script src="index.js"></script>
 </body>
 </html>
