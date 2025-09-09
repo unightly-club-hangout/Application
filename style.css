@@ -94,22 +94,23 @@ header nav a:hover {
 body::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+  top: -50%; /* Start above the viewport */
+  left: -50%; /* Start to the left of the viewport */
     width: 200%;
     height: 200%;
   background: linear-gradient(to bottom left, #2a241e, #c6b38e); /* Dark brown and tanish brown */
-  animation: animate 15s linear infinite; /* Increased animation duration */
+  animation: animate 20s linear infinite; /* Increased animation duration */
     z-index: -1;
     filter: blur(10px);
+  transform-origin: center; /* Ensure the animation rotates around the center */
 }
 
 @keyframes animate {
     0% {
-    transform: translate(0, 0); /* Start at the top-left */
+    transform: translate(0, 0) ; /* Start at the top-left */
     }
     100% {
-    transform: translate(-50%, -50%); /* Move down and to the left */
+    transform: translate(50%, 50%) ; /* Move diagonally */
     }
 }
 
