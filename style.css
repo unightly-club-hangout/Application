@@ -11,14 +11,14 @@ body {
 
 header {
   background-color: rgba(42, 36, 30, 0.8); /* Slightly lighter, transparent brown */
-  color: #c6b38e; /* Tanish-brown heading */
+  color: #e0f2f7; /* Whiteish blue heading */
     padding: 20px;
     text-align: center;
 }
 
 header h1 {
     margin: 0;
-  text-shadow: 0 0 10px #c6b38e, 0 0 20px #c6b38e, 0 0 30px #c6b38e; /* Tanish-brown glow */
+  text-shadow: 0 0 10px #e0f2f7, 0 0 20px #e0f2f7, 0 0 30px #e0f2f7; /* Whiteish blue glow */
 }
 
 header nav {
