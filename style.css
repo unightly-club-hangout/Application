@@ -99,7 +99,6 @@ body::before {
     width: 200%;
     height: 200%;
   background: linear-gradient(to bottom left, #2a241e, #c6b38e); /* Dark brown and tanish brown */
-  animation: animate 20s linear infinite; /* Increased animation duration */
     z-index: -1;
     filter: blur(10px);
   transform-origin: center; /* Ensure the animation rotates around the center */
