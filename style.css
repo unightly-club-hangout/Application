@@ -1,23 +1,24 @@
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #111;
+  background-color: #2a241e; /* Dark, cozy brown */
     height: 100vh;
     display: flex;
     flex-direction: column;
     font-family: sans-serif;
+  color: #ddd4c4; /* Light tan text */
 }
 
 header {
-    background-color: #222;
-    color: #fff;
+  background-color: rgba(42, 36, 30, 0.8); /* Slightly lighter, transparent brown */
+  color: #c6b38e; /* Tanish-brown heading */
     padding: 20px;
     text-align: center;
 }
 
 header h1 {
     margin: 0;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0fa, 0 0 40px #0fa, 0 0 50px #0fa, 0 0 60px #0fa, 0 0 70px #0fa;
+  text-shadow: 0 0 10px #c6b38e, 0 0 20px #c6b38e, 0 0 30px #c6b38e; /* Tanish-brown glow */
 }
 
 header nav {
@@ -25,9 +26,14 @@ header nav {
 }
 
 header nav a {
-    color: #fff;
+  color: #c6b38e; /* Tanish-brown links */
     text-decoration: none;
     margin: 0 10px;
+  transition: color 0.3s;
+}
+
+header nav a:hover {
+  color: #fff; /* White on hover */
 }
 
 .content {
@@ -49,29 +55,25 @@ header nav a {
     text-align: left;
     max-height: 500px;
     overflow-y: auto;
-    background: linear-gradient(to bottom, #1e272c, #15191c);
+  background-color: rgba(42, 36, 30, 0.5); /* Dark brown with transparency */
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 150, 136, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(198, 179, 142, 0.3); /* Tanish-brown glow */
     scrollbar-width: thin; /* Modern scrollbar for Firefox */
-    scrollbar-color: #0fa #222;
+  scrollbar-color: #c6b38e #2a241e; /* Tanish-brown scrollbar */
 	font-family: 'Helvetica Neue', sans-serif;
-    color: #ddd;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
-    animation: pulse 5s infinite alternate;
+  color: #ddd4c4; /* Light tan text */
+  text-shadow: 0 0 5px rgba(198, 179, 142, 0.3); /* Tanish-brown text shadow */
 }
-
 
 /* Keyframes for the pulse animation */
 @keyframes pulse {
     0% {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 150, 136, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 10px rgba(198, 179, 142, 0.2); /* Tanish-brown glow */
     }
     100% {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 255, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.4);
     }
 }
-
-
 
 /* Scrollbar styling for Chrome, Safari, and Edge */
 #posts-container::-webkit-scrollbar {
@@ -79,14 +81,14 @@ header nav a {
 }
 
 #posts-container::-webkit-scrollbar-track {
-    background: #222;
+  background: #2a241e; /* Dark brown */
     border-radius: 10px;
 }
 
 #posts-container::-webkit-scrollbar-thumb {
-    background-color: #0fa;
+  background-color: #c6b38e; /* Tanish-brown */
     border-radius: 10px;
-    border: 2px solid #222;
+  border: 2px solid #2a241e; /* Dark brown border */
 }
 
 body::before {
@@ -112,8 +114,8 @@ body::before {
 }
 
 footer {
-    background-color: #222;
-    color: #fff;
+  background-color: #222222; /* Even darker gray background */
+  color: #aaaaaa; /* Medium gray text color */
     padding: 10px;
     text-align: center;
     font-size: 0.8em;
@@ -135,7 +137,7 @@ footer a {
     transform: translate(-50%, -50%);
     font-size: 2em;
     color: #fff;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0fa, 0 0 40px #0fa, 0 0 50px #0fa, 0 0 60px #0fa, 0 0 70px #0fa;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #c6b38e, 0 0 40px #c6b38e, 0 0 50px #c6b38e, 0 0 60px #c6b38e, 0 0 70px #c6b38e; /* Tanish-brown glow */
 }
 
 .post {
@@ -147,20 +149,20 @@ footer a {
 
 .post h2 {
     font-size: 1.5em;
-    color: #fff;
-    text-shadow: 0 0 5px #0fa;
+  color: #c6b38e; /* Tanish-brown heading */
+  text-shadow: 0 0 5px #c6b38e; /* Tanish-brown text shadow */
     margin-bottom: 10px;
 }
 
 .post p {
     font-size: 1.1em;
     line-height: 1.5;
-    color: #eee;
+  color: #ddd4c4; /* Light tan text */
 }
 
 .post img {
-    max-width: 100%; /* Make images responsive */
-    height: auto; /* Maintain aspect ratio */
+  max-width: 100%;
+  height: auto;
     border-radius: 5px;
     margin-bottom: 10px;
 }
@@ -175,8 +177,8 @@ footer a {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
