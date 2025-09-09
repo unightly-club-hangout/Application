@@ -99,17 +99,17 @@ body::before {
     width: 200%;
     height: 200%;
   background: linear-gradient(to bottom left, #2a241e, #c6b38e); /* Dark brown and tanish brown */
-  animation: animate 8s linear infinite; /* Increased animation duration */
+  animation: animate 15s linear infinite; /* Increased animation duration */
     z-index: -1;
     filter: blur(10px);
 }
 
 @keyframes animate {
     0% {
-        transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(0, 0); /* Start at the top-left */
     }
     100% {
-    transform: translate(0%, 0%) rotate(360deg); /* Modified translation */
+    transform: translate(-50%, -50%); /* Move down and to the left */
     }
 }
 
