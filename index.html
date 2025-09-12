@@ -66,33 +66,25 @@
     const discordWidget = document.getElementById('discord-widget');
     const offlineNotification = document.getElementById('offline-notification');
 
-
     // Show loading indicator
     loadingEvents.style.display = 'block';
     discordWidget.style.display = 'block'; // Ensure widget is visible initially
-    offlineNotification.style.display = 'none';
-
+    offlineNotification.style.display = 'none'; // Ensure notification is hidden initially
 
     fetch(googleSheetUrl)
       .then(response => response.text())
       .then(csvData => {
+        offlineNotification.style.display = 'none'; // Hide offline notification on success
         const events = parseCSV(csvData);
         displayEvents(events);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
-        //Show offline notification and hide others
-        loadingEvents.style.display = 'none';
-      discordWidget.style.display = 'none';
-        offlineNotification.style.display = 'block';
-
+        offlineNotification.style.display = 'flex'; // Show offline notification on error
       })
       .finally(() => {
-        // Hide loading indicator unless offline notification is visible
-        if (offlineNotification.style.display !== 'block'){
+        // Hide loading indicator
             loadingEvents.style.display = 'none';
-  }
-
       });
   }
 
@@ -106,7 +98,7 @@
       if (data.length === headers.length) {
         const event = {};
         for (let j = 0; j < headers.length; j++) {
-          event[headers[j].trim()] = data[j].trim();
+          event[headers][j].trim() = data[j].trim();
         }
         events.push(event);
       }
