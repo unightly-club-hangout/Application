@@ -17,15 +17,15 @@
   <!-- ✅ Open Graph -->
   <meta property="og:title" content="Unightly Club Hangout" />
   <meta property="og:description" content="Hangout for VRChat events, parties, and community meetups." />
-  <meta property="og:image" content="https://yourdomain.com/preview.jpg" />
-  <meta property="og:url" content="https://yourdomain.com/" />
+  <meta property="og:image" content="https://media.discordapp.net/attachments/1404749274050199563/1408806041562382438/UCHtext.png?ex=68c5725e&is=68c420de&hm=984d0a1c7b8cae062c0724c30fde1b5573d1ef13ec7f793d260f594fa1dc8613&=&format=webp&quality=lossless&width=1486&height=1486" />
+  <meta property="og:url" content="https://unightly-club-hangout.github.io/unightlyclubhangout/" />
   <meta property="og:type" content="website" />
 
   <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Unightly Club Hangout" />
   <meta name="twitter:description" content="Hangout for VRChat events, parties, and community meetups." />
-  <meta name="twitter:image" content="https://yourdomain.com/preview.jpg" />
+  <meta name="twitter:image" content="https://media.discordapp.net/attachments/1404749274050199563/1408806041562382438/UCHtext.png?ex=68c5725e&is=68c420de&hm=984d0a1c7b8cae062c0724c30fde1b5573d1ef13ec7f793d260f594fa1dc8613&=&format=webp&quality=lossless&width=1486&height=1486" />
 
   <!-- ✅ Stylesheet -->
   <link rel="stylesheet" href="style.css" />
@@ -39,40 +39,39 @@
   </noscript>
 
   <!-- ✅ Header -->
-  <header class="site-header">
+  <header class="dropshadow">
     <h1>Unightly Club Hangout</h1>
-    <p>Welcome to the hub for VRChat events, parties, and community meetups.</p>
+    <nav>
+      <a href="">Home</a>
+      <a href="about.html">About</a>
+      <a href="store.html">Store</a>
+      <a href="uhc_booth.html">UHC Booth</a>
+      <a href="tools.html">Tools</a>
+    </nav>
   </header>
 
-  <!-- ✅ Navigation -->
-  <nav class="site-nav">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="store.html">Store</a>
-    <a href="uhc_booth.html">UHC Booth</a>
-    <a href="tools.html">Tools</a>
-  </nav>
-
   <!-- ✅ Manual Refresh Button -->
-  <section class="refresh-section">
-    <button id="refresh-button">🔄 Refresh Content</button>
-  </section>
+  <button class="refresh-button" id="refresh-button">🔄 Refresh Content</button>
 
-  <!-- ✅ Event Containers -->
-  <main class="events-container">
-    <section id="discord-widget" class="event-section">
-      <div id="loading-events">Loading announcements...</div>
-    </section>
+  <!-- ✅ Event Section -->
+  <div id="discord-widget" class="dropshadow">
+    <div id="loading-events">Loading announcements...</div>
+  </div>
 
-    <section id="main-posts-widget" class="post-section">
-      <div id="loading-posts">Loading posts...</div>
-    </section>
-  </main>
+  <!-- ✅ Posts Section -->
+  <div id="main-posts-widget" class="dropshadow">
+    <div id="loading-posts">Loading posts...</div>
+  </div>
+
+  <!-- ✅ Offline Notification -->
+  <div id="offline-notification">
+    <h1>You’re Offline</h1>
+    <p>Check your connection and try again.</p>
+  </div>
 
   <!-- ✅ Footer -->
-  <footer class="site-footer">
-    <p>&copy; 2025 Unightly Club Hangout</p>
-    <nav class="footer-links">
+  <footer>
+    <nav>
       <a href="terms_of_service.html">Terms of Service</a>
       <a href="privacy_policy.html">Privacy Policy</a>
       <a href="system_status.html">System Status</a>
@@ -81,11 +80,11 @@
 
   <!-- ✅ JavaScript -->
   <script>
-    const ANNOUNCEMENTS_URL = 'https://docs.google.com/spreadsheets/d/e/ANNOUNCEMENTS_SHEET_ID/pub?output=csv';
-    const MAIN_POSTS_URL = 'https://docs.google.com/spreadsheets/d/e/MAIN_POSTS_SHEET_ID/pub?output=csv';
-    const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
+    const ANNOUNCEMENTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
+    const MAIN_POSTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv';
+    const REFRESH_INTERVAL = 5 * 60 * 1000;
 
-    function loadSheet(url, containerId, loadingId) {
+    function loadSheet(url, containerId, loadingId, type) {
       const loadingEl = document.getElementById(loadingId);
       loadingEl.style.display = 'block';
 
@@ -97,11 +96,12 @@
         .then(csv => {
           loadingEl.style.display = 'none';
           const data = parseCSV(csv);
-          displayItems(data, containerId);
+          displayItems(data, containerId, type);
         })
         .catch(error => {
           loadingEl.style.display = 'none';
           console.error(`Error loading sheet for ${containerId}:`, error);
+          document.getElementById('offline-notification').style.display = 'flex';
         });
     }
 
@@ -122,7 +122,7 @@
       return items;
     }
 
-    function displayItems(items, containerId) {
+    function displayItems(items, containerId, type) {
       const container = document.getElementById(containerId);
       container.innerHTML = '';
 
@@ -131,14 +131,20 @@
       items.forEach(item => {
         if (item.Display && item.Display.trim().toUpperCase() === 'TRUE') {
           const div = document.createElement('div');
-          div.className = 'event-card';
-          div.innerHTML = `
-            <h3>${item.Name}</h3>
-            <p>Date: ${item.Date || ''}</p>
-            <p>Time: ${item.Time || ''}</p>
-            <p>Description: ${item.Description || ''}</p>
-            ${item.Link ? `<p><a href="${item.Link}" target="_blank">Join</a></p>` : ''}
-          `;
+          div.className = type === 'event' ? 'discord-event' : 'post';
+          div.innerHTML = type === 'event'
+            ? `
+              <h3>${item.Name}</h3>
+              <p>Date: ${item.Date || ''}</p>
+              <p>Time: ${item.Time || ''}</p>
+              <p>Description: ${item.Description || ''}</p>
+              ${item.Link ? `<p><a href="${item.Link}" target="_blank">Join</a></p>` : ''}
+            `
+            : `
+              <h2>${item.Title}</h2>
+              <p>${item.Content}</p>
+              ${item.Image ? `<img src="${item.Image}" alt="${item.Title}" />` : ''}
+            `;
           container.appendChild(div);
           hasVisible = true;
         }
@@ -153,8 +159,9 @@
     }
 
     function refreshSheets() {
-      loadSheet(ANNOUNCEMENTS_URL, 'discord-widget', 'loading-events');
-      loadSheet(MAIN_POSTS_URL, 'main-posts-widget', 'loading-posts');
+      document.getElementById('offline-notification').style.display = 'none';
+      loadSheet(ANNOUNCEMENTS_URL, 'discord-widget', 'loading-events', 'event');
+      loadSheet(MAIN_POSTS_URL, 'main-posts-widget', 'loading-posts', 'post');
     }
 
     window.onload = refreshSheets;
