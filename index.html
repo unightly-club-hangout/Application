@@ -108,22 +108,46 @@
         });
     }
 
-    function parseCSV(csvData) {
-      const lines = csvData.trim().split('\n');
-      const headers = lines[0].split(',').map(h => h.trim());
-      const items = [];
+function parseCSV(csvData) {
+  const lines = csvData.trim().split('\n');
+  const headers = parseLine(lines[0]);
+  const items = [];
 
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim());
-        const item = {};
-        headers.forEach((header, index) => {
-          item[header] = values[index] || '';
-        });
-        items.push(item);
-      }
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseLine(lines[i]);
+    const item = {};
+    headers.forEach((header, index) => {
+      item[header] = values[index] || '';
+    });
+    items.push(item);
+  }
 
-      return items;
+  return items;
+}
+
+function parseLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"' && line[i + 1] === '"') {
+      current += '"';
+      i++;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      result.push(current);
+      current = '';
+    } else {
+      current += char;
     }
+  }
+  result.push(current);
+  return result.map(v => v.trim());
+}
+
 
     function displayItems(items, containerId, type) {
       const container = document.getElementById(containerId);
