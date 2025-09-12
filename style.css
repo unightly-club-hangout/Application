@@ -209,3 +209,53 @@ footer a {
     text-decoration: none;
     cursor: pointer;
 }
+
+#discord-widget {
+    width: 300px; /* Adjust as needed */
+    float: right;
+    margin-left: 20px; /* Adjust spacing as needed */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    padding: 10px; /* Optional: Add some padding */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+/* Clearfix to prevent floating issues */
+.content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+    #discord-widget {
+        width: 100%; /* Take full width on smaller screens */
+        float: none; /* Remove float */
+        margin-left: 0; /* Remove margin */
+    }
+}
+
+.discord-event {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.discord-event h3 {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.discord-event p {
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+.discord-event a {
+  color: #fff;
+  text-decoration: none;
+  background-color: #7289da; /* Discord color */
+  padding: 5px 10px;
+  border-radius: 3px;
+}
