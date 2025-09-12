@@ -60,6 +60,7 @@
     const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
     const loadingEvents = document.getElementById('loading-events');
     const discordWidget = document.getElementById('discord-widget');
+    let hasEvents = false; // Track if there are any events to display
 
     // Show loading indicator
     loadingEvents.style.display = 'block';
