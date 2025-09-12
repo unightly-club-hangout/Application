@@ -259,3 +259,27 @@ footer a {
   padding: 5px 10px;
   border-radius: 3px;
 }
+
+#offline-notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+  color: white;
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000; /* Ensure it's on top of everything */
+}
+
+#offline-notification h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+#offline-notification p {
+  font-size: 1.5em;
+}

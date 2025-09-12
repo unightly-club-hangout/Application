@@ -32,6 +32,10 @@
 </script>
 </head>
 <body>
+  <div id="offline-notification">
+    <h1>Offline</h1>
+    <p>Unable to load event data. Please check your internet connection.</p>
+  </div>
   <header>
     <h1>Unightly Club Hangout</h1>
     <nav>
@@ -60,10 +64,14 @@
     const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
     const loadingEvents = document.getElementById('loading-events');
     const discordWidget = document.getElementById('discord-widget');
+    const offlineNotification = document.getElementById('offline-notification');
+
 
     // Show loading indicator
     loadingEvents.style.display = 'block';
     discordWidget.style.display = 'block'; // Ensure widget is visible initially
+    offlineNotification.style.display = 'none';
+
 
     fetch(googleSheetUrl)
       .then(response => response.text())
@@ -71,10 +79,20 @@
         const events = parseCSV(csvData);
         displayEvents(events);
       })
-      .catch(error => console.error('Error fetching data:', error))
-      .finally(() => {
-        // Hide loading indicator
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        //Show offline notification and hide others
         loadingEvents.style.display = 'none';
+      discordWidget.style.display = 'none';
+        offlineNotification.style.display = 'block';
+
+      })
+      .finally(() => {
+        // Hide loading indicator unless offline notification is visible
+        if (offlineNotification.style.display !== 'block'){
+            loadingEvents.style.display = 'none';
+  }
+
       });
   }
 
