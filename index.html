@@ -81,6 +81,7 @@
   }
 
   function parseCSV(csvData) {
+    console.log(csvData); // Log the raw CSV data for debugging
     const lines = csvData.split('\n');
     const headers = lines[0].split(',');
     const events = [];
@@ -105,6 +106,7 @@
 
     let hasEvents = false; // Track if there are any events to display
 
+    console.log(events); // Log the parsed events for debugging
     events.forEach(event => {
       if (event["Display"] === "Y") { // Check the "Display" column
         hasEvents = true; // Set to true if at least one event is displayed
