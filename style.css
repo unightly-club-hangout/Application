@@ -283,3 +283,19 @@ footer a {
 #offline-notification p {
   font-size: 1.5em;
 }
+
+#refresh-button {
+  margin: 20px auto;
+  display: block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#refresh-button:hover {
+  background-color: #444;
+}

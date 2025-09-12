@@ -1,147 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta property="og:title" content="Unightly Club Hangout">
-  <meta property="og:description" content="Join Unightly Club Hangout for VRChat events, parties, and community meetups. Stay up-to-date with the latest announcements and event schedule.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/main/UCHimage.webp">
-  <meta property="og:url" content="https://unightly-club-hangout.github.io/unightlyclubhangout">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Unightly Club Hangout">
-  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Join Unightly Club Hangout for VRChat events, parties, and community meetups. Stay up-to-date with the latest announcements and event schedule!">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unightly Club Hangout</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/silentmason/Unightly-Club-Hangout/main/UCHimage.webp" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JZ4GR0CGC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-6JZ4GR0CGC');
+  <!-- Open Graph -->
+  <meta property="og:title" content="Unightly Club Hangout" />
+  <meta property="og:description" content="Hangout for VRChat events, parties, and community meetups." />
+  <meta property="og:image" content="https://yourdomain.com/preview.jpg" />
+  <meta property="og:url" content="https://yourdomain.com/" />
+  <meta property="og:type" content="website" />
 
-  function dispatchToolsClickEvent () {
-    const event = new CustomEvent('toolsLinkClicked', {
-      detail: {
-        timestamp: new Date().toISOString()
-      }
-    });
-    window.dispatchEvent(event);
-  }
-</script>
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Unightly Club Hangout" />
+  <meta name="twitter:description" content="Hangout for VRChat events, parties, and community meetups." />
+  <meta name="twitter:image" content="https://yourdomain.com/preview.jpg" />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Unightly Club Hangout</h1>
-    <nav>
-      <a href="">Home</a>
-      <a href="about.html">About</a>
-      <a href="https://uch.booth.pm/">Store</a>
-      <a href="tools.html" onclick="dispatchToolsClickEvent()">Tools</a>
-    </nav>
-  </header>
-  <div class="content">
-    <div id="posts-container">
-      Loading posts...
+
+  <!-- Navigation -->
+  <nav>
+    <a href="">Home</a>
+    <a href="about.html">About</a>
+    <a href="store.html">Store</a>
+    <a href="uhc_booth.html">UHC Booth</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+
+  <!-- Manual Refresh Button -->
+  <button id="refresh-button">🔄 Refresh Content</button>
+
+  <!-- Event Containers -->
+  <div class="events-container">
+    <div id="discord-widget">
+      <div id="loading-events">Loading announcements...</div>
     </div>
-  <div id="discord-widget">
-    <div id="loading-events">Loading events...</div>
-</div>
+    <div id="main-posts-widget">
+      <div id="loading-posts">Loading posts...</div>
+    </div>
   </div>
+
+  <!-- Footer -->
   <footer>
-    <a href="https://unightly-club-hangout.github.io/uch/terms_of_service.html">Terms of Service</a>
-    <a href="https://unightly-club-hangout.github.io/uch/privacy_policy.html">Privacy Policy</a>
-    <a href="https://unightly-club-hangout.github.io/uch/issue.html">System Status</a>
+    <a href="terms_of_service.html">Terms of Service</a>
+    <a href="privacy_policy.html">Privacy Policy</a>
+    <a href="system_status.html">System Status</a>
   </footer>
-  <script src="index.js"></script>
+
   <script>
-  function loadEvents() {
-    const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
-    const loadingEvents = document.getElementById('loading-events');
-    const discordWidget = document.getElementById('discord-widget');
-    let hasEvents = false; // Track if there are any events to display
+    const ANNOUNCEMENTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
+    const MAIN_POSTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv';
+    const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-    // Show loading indicator
-    loadingEvents.style.display = 'block';
-    discordWidget.style.display = 'block'; // Ensure widget is visible initially
+    function loadSheet(url, containerId, loadingId) {
+      const loadingEl = document.getElementById(loadingId);
+      loadingEl.style.display = 'block';
 
-    fetch(googleSheetUrl)
+      fetch(url)
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-      })
-        .then(csvData => {
-            const events = parseCSV(csvData);
-            displayEvents(events);
-      })
-        .catch(error => {
-            console.error('Error fetching or processing data:', error);
-            //If you encounter a CORS error here, you might need a server-side proxy.
+          if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+          return response.text();
         })
-        .finally(() => {
-        // Hide loading indicator
-            loadingEvents.style.display = 'none';
-      });
-  }
+        .then(csv => {
+          loadingEl.style.display = 'none';
+          const data = parseCSV(csv);
+          displayItems(data, containerId);
+        })
+        .catch(error => {
+          loadingEl.style.display = 'none';
+          console.error(`Error loading sheet for ${containerId}:`, error);
+        });
+    }
 
-  function parseCSV(csvData) {
-    console.log(csvData); // Log the raw CSV data for debugging
-    const lines = csvData.split('\n');
-    const headers = lines[0].split(',');
-    const events = [];
+    function parseCSV(csvData) {
+      const lines = csvData.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim());
+      const items = [];
 
-    for (let i = 1; i < lines.length; i++) {
-      const data = lines[i].split(',');
-      if (data.length === headers.length) {
-        const event = {};
-        for (let j = 0; j < headers.length; j++) {
-          event[headers[j]] = data[j].trim();
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim());
+        const item = {};
+        headers.forEach((header, index) => {
+          item[header] = values[index] || '';
+        });
+        items.push(item);
+      }
+
+      return items;
+    }
+
+    function displayItems(items, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      let hasVisible = false;
+
+      items.forEach(item => {
+        if (item.Display && item.Display.trim().toUpperCase() === 'TRUE') {
+          const div = document.createElement('div');
+          div.className = 'event';
+          div.innerHTML = `
+            <h3>${item.Name}</h3>
+            <p>Date: ${item.Date || ''}</p>
+            <p>Time: ${item.Time || ''}</p>
+            <p>Description: ${item.Description || ''}</p>
+            ${item.Link ? `<p><a href="${item.Link}" target="_blank">Join</a></p>` : ''}
+          `;
+          container.appendChild(div);
+          hasVisible = true;
         }
-        events.push(event);
+      });
+
+      container.style.display = hasVisible ? 'block' : 'none';
+      container.style.height = hasVisible ? 'auto' : '0px';
+
+      if (!hasVisible) {
+        container.innerHTML = `<p>No upcoming items to display.</p>`;
       }
     }
-    return events;
-  }
 
-function displayEvents(events) {
-    const discordWidget = document.getElementById("discord-widget");
-    console.log("displayEvents called");
+    function refreshSheets() {
+      loadSheet(ANNOUNCEMENTS_URL, 'discord-widget', 'loading-events');
+      loadSheet(MAIN_POSTS_URL, 'main-posts-widget', 'loading-posts');
+    }
 
-    discordWidget.innerHTML = "";
+    window.onload = refreshSheets;
+    setInterval(refreshSheets, REFRESH_INTERVAL);
 
-    let hasEvents = false; // track if we found any
-
-    events.forEach(event => {
-        if (event.hasOwnProperty("Display")) {
-            const displayValue = event.Display;
-            if (displayValue && displayValue.trim().toUpperCase() === "TRUE") {
-                const eventDiv = document.createElement("div");
-                eventDiv.className = "event";
-                eventDiv.innerHTML = `
-                    <h3>${event.Name}</h3>
-                    <p>Date: ${event.Date}</p>
-                    <p>Time: ${event.Time}</p>
-                    <p>Description: ${event.Description}</p>
-                    <p><a href="${event.Link}">Join Event</a></p>
-                `;
-                discordWidget.appendChild(eventDiv);
-                hasEvents = true;
-            }
-        } else {
-            console.warn("Event object missing 'Display' property:", event);
-        }
+    document.getElementById('refresh-button').addEventListener('click', () => {
+      refreshSheets();
     });
-
-    // Toggle widget visibility here
-    discordWidget.style.display = hasEvents ? 'block' : 'none';
-    discordWidget.style.height = hasEvents ? 'auto' : '0px';
-}
-
-  // Load events when the page loads
-  window.onload = loadEvents;
-</script>
+  </script>
 </body>
 </html>
