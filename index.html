@@ -107,44 +107,37 @@
   }
 
 function displayEvents(events) {
-    const discordWidget = document.getElementById('discord-widget');
-    let hasEvents = false; // Track if there are any events to display
+    const discordWidget = document.getElementById("discord-widget");
     console.log("displayEvents called");
-    console.log(events);
+
+    discordWidget.innerHTML = "";
+
+    let hasEvents = false; // track if we found any
 
     events.forEach(event => {
-        console.log("Event in forEach", event);
-        // Check if the event object has the "Display" property
         if (event.hasOwnProperty("Display")) {
-            const displayValue = event["Display"];
-            console.log("Display value:", displayValue); // Add this line
-
-            if (displayValue && displayValue.trim().toUpperCase() === "Y") { // Check the "Display" column
-                hasEvents = true; // Set to true if at least one event is displayed
-                const eventDiv = document.createElement('div');
-                eventDiv.className = 'discord-event';
+            const displayValue = event.Display;
+            if (displayValue && displayValue.trim().toUpperCase() === "TRUE") {
+                const eventDiv = document.createElement("div");
+                eventDiv.className = "event";
                 eventDiv.innerHTML = `
-                    <h3>${event["Event Name"]}</h3>
-                    <p>Date: ${event["Date"]}</p>
-                    <p>Time: ${event["Time"]}</p>
-                    <p>Description: ${event["Description"]}</p>
-                    <a href="${event["Link"]}">Join Event</a>
+                    <h3>${event.Name}</h3>
+                    <p>Date: ${event.Date}</p>
+                    <p>Time: ${event.Time}</p>
+                    <p>Description: ${event.Description}</p>
+                    <p><a href="${event.Link}">Join Event</a></p>
                 `;
                 discordWidget.appendChild(eventDiv);
+                hasEvents = true;
             }
         } else {
             console.warn("Event object missing 'Display' property:", event);
         }
     });
 
-    // Hide the discord-widget if no events are displayed
-    if (!hasEvents) {
-        discordWidget.style.display = 'none';
-        discordWidget.style.height = '0px';
-    } else {
-        discordWidget.style.display = 'block';
-        discordWidget.style.height = 'auto';
-    }
+    // Toggle widget visibility here
+    discordWidget.style.display = hasEvents ? 'block' : 'none';
+    discordWidget.style.height = hasEvents ? 'auto' : '0px';
 }
 
   // Load events when the page loads
