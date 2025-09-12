@@ -5,55 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unightly Club Hangout</title>
 
-  <!-- Open Graph -->
+  <!-- ✅ Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id=G-6JZ4GR0CGC'+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','G-6JZ4GR0CGC');
+  </script>
+
+  <!-- ✅ Open Graph -->
   <meta property="og:title" content="Unightly Club Hangout" />
   <meta property="og:description" content="Hangout for VRChat events, parties, and community meetups." />
   <meta property="og:image" content="https://yourdomain.com/preview.jpg" />
   <meta property="og:url" content="https://yourdomain.com/" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter Card -->
+  <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Unightly Club Hangout" />
   <meta name="twitter:description" content="Hangout for VRChat events, parties, and community meetups." />
   <meta name="twitter:image" content="https://yourdomain.com/preview.jpg" />
 
+  <!-- ✅ Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav>
-    <a href="">Home</a>
+  <!-- ✅ Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=G-6JZ4GR0CGC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+
+  <!-- ✅ Header -->
+  <header class="site-header">
+    <h1>Unightly Club Hangout</h1>
+    <p>Welcome to the hub for VRChat events, parties, and community meetups.</p>
+  </header>
+
+  <!-- ✅ Navigation -->
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="store.html">Store</a>
     <a href="uhc_booth.html">UHC Booth</a>
     <a href="tools.html">Tools</a>
   </nav>
 
-  <!-- Manual Refresh Button -->
-  <button id="refresh-button">🔄 Refresh Content</button>
+  <!-- ✅ Manual Refresh Button -->
+  <section class="refresh-section">
+    <button id="refresh-button">🔄 Refresh Content</button>
+  </section>
 
-  <!-- Event Containers -->
-  <div class="events-container">
-    <div id="discord-widget">
+  <!-- ✅ Event Containers -->
+  <main class="events-container">
+    <section id="discord-widget" class="event-section">
       <div id="loading-events">Loading announcements...</div>
-    </div>
-    <div id="main-posts-widget">
-      <div id="loading-posts">Loading posts...</div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <a href="terms_of_service.html">Terms of Service</a>
-    <a href="privacy_policy.html">Privacy Policy</a>
-    <a href="system_status.html">System Status</a>
+    <section id="main-posts-widget" class="post-section">
+      <div id="loading-posts">Loading posts...</div>
+    </section>
+  </main>
+
+  <!-- ✅ Footer -->
+  <footer class="site-footer">
+    <p>&copy; 2025 Unightly Club Hangout</p>
+    <nav class="footer-links">
+      <a href="terms_of_service.html">Terms of Service</a>
+      <a href="privacy_policy.html">Privacy Policy</a>
+      <a href="system_status.html">System Status</a>
+    </nav>
   </footer>
 
+  <!-- ✅ JavaScript -->
   <script>
-    const ANNOUNCEMENTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
-    const MAIN_POSTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWHMfgoHQ33CDC9H30UMh67iQBpcBXv1s1cLH8-FQfZkW_VUsq2O0npXFmxBV7j9xkk16wWQo4tP29/pub?output=csv';
+    const ANNOUNCEMENTS_URL = 'https://docs.google.com/spreadsheets/d/e/ANNOUNCEMENTS_SHEET_ID/pub?output=csv';
+    const MAIN_POSTS_URL = 'https://docs.google.com/spreadsheets/d/e/MAIN_POSTS_SHEET_ID/pub?output=csv';
     const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
     function loadSheet(url, containerId, loadingId) {
@@ -102,7 +131,7 @@
       items.forEach(item => {
         if (item.Display && item.Display.trim().toUpperCase() === 'TRUE') {
           const div = document.createElement('div');
-          div.className = 'event';
+          div.className = 'event-card';
           div.innerHTML = `
             <h3>${item.Name}</h3>
             <p>Date: ${item.Date || ''}</p>
