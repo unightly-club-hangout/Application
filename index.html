@@ -32,10 +32,6 @@
 </script>
 </head>
 <body>
-  <div id="offline-notification">
-    <h1>Offline</h1>
-    <p>Unable to load event data. Please check your internet connection.</p>
-  </div>
   <header>
     <h1>Unightly Club Hangout</h1>
     <nav>
@@ -64,23 +60,19 @@
     const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
     const loadingEvents = document.getElementById('loading-events');
     const discordWidget = document.getElementById('discord-widget');
-    const offlineNotification = document.getElementById('offline-notification');
 
     // Show loading indicator
     loadingEvents.style.display = 'block';
     discordWidget.style.display = 'block'; // Ensure widget is visible initially
-    offlineNotification.style.display = 'none'; // Ensure notification is hidden initially
 
     fetch(googleSheetUrl)
       .then(response => response.text())
       .then(csvData => {
-        offlineNotification.style.display = 'none'; // Hide offline notification on success
         const events = parseCSV(csvData);
         displayEvents(events);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
-        offlineNotification.style.display = 'flex'; // Show offline notification on error
       })
       .finally(() => {
         // Hide loading indicator
