@@ -101,14 +101,11 @@
 
   function displayEvents(events) {
     const discordWidget = document.getElementById('discord-widget');
-  //  discordWidget.innerHTML = ''; // Clear existing content
-  //  discordWidget.appendChild(document.getElementById('loading-events'))
-
     let hasEvents = false; // Track if there are any events to display
-
-    console.log(events); // Log the parsed events for debugging
+console.log("displayEvents called")
+console.log(events)
     events.forEach(event => {
-console.log(event)
+console.log("Event in forEach", event)
       if (event["Display"] === "Y") { // Check the "Display" column
         hasEvents = true; // Set to true if at least one event is displayed
       const eventDiv = document.createElement('div');
