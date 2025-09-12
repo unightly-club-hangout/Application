@@ -125,9 +125,11 @@
     // Hide the discord-widget if no events are displayed
     if (!hasEvents) {
       discordWidget.style.display = 'none';
+       discordWidget.style.height = '0px';
     } else {
         discordWidget.style.display = 'block';
-  }
+        discordWidget.style.height = 'auto';
+    }
   }
 
   // Load events when the page loads
