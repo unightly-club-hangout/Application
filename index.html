@@ -47,13 +47,6 @@
     </div>
     <div id="discord-widget">
       <!-- Discord Widget Code Goes Here -->
-	  <div class="discord-event">
-		  <h3>Example Event</h3>
-		  <p>Date: October 27, 2023</p>
-		  <p>Time: 7:00 PM EST</p>
-		  <p>Description: Example event description</p>
-		  <a href="https://discord.gg/svFknKUc?event=1415860281615187978">Join Event</a>
-	  </div>
     </div>
   </div>
   <footer>
@@ -62,5 +55,59 @@
     <a href="https://unightly-club-hangout.github.io/uch/issue.html">System Status</a>
   </footer>
   <script src="index.js"></script>
+  <script>
+  function loadEvents() {
+    const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuSjI-BjIDgQNkW7Q_Xec8iy_oybjJ2Mkw0uV06ZPKqm7hBZs8_a9JoxFNqWUZW_KWuHC57qCVSB9V/pub?output=csv';
+    fetch(googleSheetUrl)
+      .then(response => response.text())
+      .then(csvData => {
+        const events = parseCSV(csvData);
+        displayEvents(events);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }
+
+  function parseCSV(csvData) {
+    const lines = csvData.split('\n');
+    const headers = lines[0].split(',');
+    const events = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const data = lines[i].split(',');
+      if (data.length === headers.length) {
+        const event = {};
+        for (let j = 0; j < headers.length; j++) {
+          event[headers[j].trim()] = data[j].trim();
+        }
+        events.push(event);
+      }
+    }
+    return events;
+  }
+
+  function displayEvents(events) {
+    const discordWidget = document.getElementById('discord-widget');
+    discordWidget.innerHTML = ''; // Clear existing content
+
+    events.forEach(event => {
+      if (event["Display"] === "Y") { // Check the "Display" column
+      const eventDiv = document.createElement('div');
+      eventDiv.className = 'discord-event';
+
+      eventDiv.innerHTML = `
+        <h3>${event["Event Name"]}</h3>
+        <p>Date: ${event["Date"]}</p>
+        <p>Time: ${event["Time"]}</p>
+        <p>Description: ${event["Description"]}</p>
+        <a href="${event["Link"]}">Join Event</a>
+      `;
+      discordWidget.appendChild(eventDiv);
+  }
+    });
+  }
+
+  // Load events when the page loads
+  window.onload = loadEvents;
+</script>
 </body>
 </html>
