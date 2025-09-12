@@ -108,6 +108,7 @@
 
     console.log(events); // Log the parsed events for debugging
     events.forEach(event => {
+console.log(event)
       if (event["Display"] === "Y") { // Check the "Display" column
         hasEvents = true; // Set to true if at least one event is displayed
       const eventDiv = document.createElement('div');
