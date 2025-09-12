@@ -66,15 +66,21 @@
     discordWidget.style.display = 'block'; // Ensure widget is visible initially
 
     fetch(googleSheetUrl)
-      .then(response => response.text())
-      .then(csvData => {
-        const events = parseCSV(csvData);
-        displayEvents(events);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
       })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+        .then(csvData => {
+            const events = parseCSV(csvData);
+            displayEvents(events);
       })
-      .finally(() => {
+        .catch(error => {
+            console.error('Error fetching or processing data:', error);
+            //If you encounter a CORS error here, you might need a server-side proxy.
+        })
+        .finally(() => {
         // Hide loading indicator
             loadingEvents.style.display = 'none';
       });
@@ -102,21 +108,24 @@
   function displayEvents(events) {
     const discordWidget = document.getElementById('discord-widget');
     let hasEvents = false; // Track if there are any events to display
-console.log("displayEvents called")
-console.log(events)
+    console.log("displayEvents called");
+    console.log(events);
+
     events.forEach(event => {
-console.log("Event in forEach", event)
-      if (event["Display"] === "Y") { // Check the "Display" column
+        console.log("Event in forEach", event);
+        const displayValue = event["Display"];
+        console.log("Display value:", displayValue); // Add this line
+
+        if (displayValue && displayValue.trim().toUpperCase() === "Y") { // Check the "Display" column
         hasEvents = true; // Set to true if at least one event is displayed
       const eventDiv = document.createElement('div');
       eventDiv.className = 'discord-event';
-
       eventDiv.innerHTML = `
-          <h3>${event["Event Name"]}</h3>
+                <h3>${event["Event Name"]}</h3>
         <p>Date: ${event["Date"]}</p>
         <p>Time: ${event["Time"]}</p>
         <p>Description: ${event["Description"]}</p>
-        <a href="${event["Link"]}">Join Event</a>
+                <a href="${event["Link"]}">Join Event</a>
       `;
       discordWidget.appendChild(eventDiv);
   }
