@@ -16,7 +16,7 @@ function parseCSV(csvData) {
   const lines = csvData.split("\n");
   const headers = lines[0].split(",").map(header => header.trim());
   const posts = [];
-  for (let i = 1; 1 < lines.length; i++) {
+  for (let i = 1; i < lines.length; i++) {
     const values = lines[i].split(",").map(value => value.trim());
     if (values.length === headers.length) {
       const post = {};
@@ -33,7 +33,6 @@ function displayPosts(posts) {
       postsContainer.innerHTML = "";
       posts.forEach(post => {
         const postDiv = document.createElement("div");
-console.log(postDiv)
         postDiv.innerHTML = `
           <h2>${post.Title}</h2>
           <p>${post.Content}</p>
@@ -56,7 +55,7 @@ console.log(postDiv)
           image: post.ImageURL ? { url: post.ImageURL } : null
         }]
       };
-      try {
+        try {
         await fetch(webhookUrl, {
           method: 'POST',
           headers: {
